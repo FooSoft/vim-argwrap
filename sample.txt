@@ -1,0 +1,37 @@
+Foo(a, b, c)
+
+Foo(
+    a,
+    b
+)
+
+Foo(
+    a,
+    [b, c],
+    d
+)
+
+Foo(
+    a,
+    [
+        b,
+        c
+    ],
+    d
+)
+)
+
+Foo(
+    a,
+    [b, c],
+    d
+)
+
+Foo(
+    a,
+    [
+        b,
+        c
+    ],
+    d
+)
