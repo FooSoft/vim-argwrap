@@ -55,13 +55,12 @@ function! ExtractText(range)
 endfunction
 
 function! UpdateScopeStack(stack, char)
-    let l:openers = {"\"": "\"", "\'": "\'", "(": ")", "[": "]", "{": "}"}
-    let l:closers = {"\"": "\"", "\'": "\'", ")": "(", "]": "[", "}": "{"}
-
+    let l:pairs  = {"\"": "\"", "\'": "\'", ")": "(", "]": "[", "}": "{"}
     let l:length = len(a:stack)
-    if l:length > 0 && get(l:closers, a:char) == a:stack[l:length - 1]
+
+    if l:length > 0 && get(l:pairs, a:char, "") == a:stack[l:length - 1]
         call remove(a:stack, l:length - 1)
-    elseif has_key(l:openers, a:char)
+    elseif index(values(l:pairs), a:char) >= 0
         call add(a:stack, a:char)
     endif
 endfunction
@@ -74,6 +73,7 @@ function! ExtractArguments(text)
     for l:index in range(strlen(a:text))
         let l:char = a:text[l:index]
         call UpdateScopeStack(l:stack, l:char)
+
         if len(l:stack) == 0 && l:char == ","
             call add(l:arguments, l:argument)
             let l:argument = ""
