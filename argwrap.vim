@@ -96,10 +96,17 @@ function! argwrap#extractContainer(range)
 endfunction
 
 function! argwrap#wrapContainer(range, container, arguments)
-    let l:line = a:range.lineStart
+    let l:argCount = len(a:arguments)
+    let l:line     = a:range.lineStart
+
     call setline(l:line, a:container.prefix)
-    for l:argument in a:arguments
-        call append(l:line, l:argument . ",")
+    for l:index in range(l:argCount)
+        let l:text = a:arguments[l:index]
+        if l:index < l:argCount - 1
+            let l:text .= ","
+        endif
+
+        call append(l:line, l:text)
         let l:line += 1
         exec printf("%s>", l:line)
     endfor
