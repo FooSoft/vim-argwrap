@@ -1,4 +1,4 @@
-Foo(a, [b, z], c)
+a = Foo(a, [b, z], "hello, world", c)
 
 Foo(
     a,

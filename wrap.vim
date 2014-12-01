@@ -21,11 +21,6 @@
 function! FindRange()
     let [l:lineStart, l:colStart] = searchpairpos("(", "", ")", "Wnb")
     let [l:lineEnd,   l:colEnd]   = searchpairpos("(", "", ")", "Wn")
-
-    if l:lineStart == l:lineEnd && l:colStart == l:colEnd
-        return {}
-    endif
-
     return {"lineStart": l:lineStart, "colStart": l:colStart, "lineEnd": l:lineEnd, "colEnd": l:colEnd}
 endfunction
 
@@ -48,7 +43,7 @@ function! ExtractArgumentText(range)
         if l:extractStart < l:extractEnd
             let l:extract = l:lineText[l:extractStart : l:extractEnd - 1]
             let l:extract = substitute(l:extract, "^\\s\\+", "", "g")
-            let l:extract = substitute(l:extract, ",", ", ", "g")
+            let l:extract = substitute(l:extract, ",$", ", ", "g")
             let l:text .= l:extract
         endif
     endfor
@@ -96,23 +91,34 @@ endfunction
 
 function! ExtractContainer(range)
     let l:line   = getline(a:range.lineStart)
-    let l:indent = match(l:line, "\\S")
-    let l:prefix = l:line[l:indent : a:range.colStart - 1]
+    let l:prefix = l:line[: a:range.colStart - 1]
 
     let l:line   = getline(a:range.lineEnd)
     let l:suffix = l:line[a:range.colEnd - 1:]
 
-    return {"indent": l:indent, "prefix": l:prefix, "suffix": l:suffix}
+    return {"prefix": l:prefix, "suffix": l:suffix}
+endfunction
+
+function! RebuildContainer(range, container, arguments)
+    let l:line = a:range.lineStart
+
+    call setline(l:line, a:container.prefix)
+    for l:argument in a:arguments
+        call append(l:line, l:argument)
+        let l:line += 1
+        call cursor(l:line, 1)
+        normal! >>
+    endfor
+    call append(l:line, a:container.suffix)
 endfunction
 
 function! Wrap()
-    let l:range = FindRange()
-    if len(l:range) == 0
-        return
-    endif
+    let l:range     = FindRange()
+    let l:argText   = ExtractArgumentText(l:range)
+    let l:arguments = ExtractArguments(l:argText)
+    let l:container = ExtractContainer(l:range)
 
-    let l:text = ExtractArgumentText(l:range)
-    let l:args = ExtractArguments(l:text)
-    let l:cont = ExtractContainer(l:range)
-    echo l:cont
+    echo l:arguments
+
+    call RebuildContainer(l:range, l:container, l:arguments)
 endfunction
