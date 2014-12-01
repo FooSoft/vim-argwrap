@@ -20,36 +20,35 @@
 
 function! FindRange()
     let [l:lineStart, l:colStart] = searchpairpos("(", "", ")", "Wnb")
-    let [l:lineEnd, l:colEnd] = searchpairpos("(", "", ")", "Wn")
+    let [l:lineEnd,   l:colEnd]   = searchpairpos("(", "", ")", "Wn")
 
     if l:lineStart == l:lineEnd && l:colStart == l:colEnd
-        return []
+        return {}
     endif
 
-    return [l:lineStart, l:colStart, l:lineEnd, l:colEnd]
+    return {"lineStart": l:lineStart, "colStart": l:colStart, "lineEnd": l:lineEnd, "colEnd": l:colEnd}
 endfunction
 
-function! ExtractText(range)
-    let [l:lineStart, l:colStart, l:lineEnd, l:colEnd] = a:range
+function! ExtractArgumentText(range)
     let l:text = ""
 
-    for l:lineIndex in range(l:lineStart, l:lineEnd)
+    for l:lineIndex in range(a:range.lineStart, a:range.lineEnd)
         let l:lineText = getline(l:lineIndex)
 
         let l:extractStart = 0
-        if l:lineIndex == l:lineStart
-            let l:extractStart = l:colStart
+        if l:lineIndex == a:range.lineStart
+            let l:extractStart = a:range.colStart
         endif
 
         let l:extractEnd = strlen(l:lineText)
-        if l:lineIndex == l:lineEnd
-            let l:extractEnd = l:colEnd - 1
+        if l:lineIndex == a:range.lineEnd
+            let l:extractEnd = a:range.colEnd - 1
         endif
 
         if l:extractStart < l:extractEnd
             let l:extract = l:lineText[l:extractStart : l:extractEnd - 1]
             let l:extract = substitute(l:extract, "^\\s\\+", "", "g")
-            let l:extract = substitute(l:extract, ",$", ", ", "g")
+            let l:extract = substitute(l:extract, ",", ", ", "g")
             let l:text .= l:extract
         endif
     endfor
@@ -95,14 +94,25 @@ function! ExtractArguments(text)
     return l:arguments
 endfunction
 
+function! ExtractContainer(range)
+    let l:line   = getline(a:range.lineStart)
+    let l:indent = match(l:line, "\\S")
+    let l:prefix = l:line[l:indent : a:range.colStart - 1]
+
+    let l:line   = getline(a:range.lineEnd)
+    let l:suffix = l:line[a:range.colEnd - 1:]
+
+    return {"indent": l:indent, "prefix": l:prefix, "suffix": l:suffix}
+endfunction
+
 function! Wrap()
     let l:range = FindRange()
     if len(l:range) == 0
         return
     endif
 
-    let l:text = ExtractText(l:range)
+    let l:text = ExtractArgumentText(l:range)
     let l:args = ExtractArguments(l:text)
-    echo l:args
+    let l:cont = ExtractContainer(l:range)
+    echo l:cont
 endfunction
-
