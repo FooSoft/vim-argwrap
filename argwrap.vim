@@ -51,7 +51,6 @@ endfunction
 
 function! argwrap#findClosestRange()
     let l:ranges = []
-
     for l:braces in [["(", ")"], ["\\[", "\\]"], ["{", "}"]]
         let l:range = argwrap#findRange(braces)
         if argwrap#validateRange(l:range)
@@ -132,18 +131,24 @@ function! argwrap#extractArguments(text)
 endfunction
 
 function! argwrap#extractContainer(range)
-    let l:prefix = getline(a:range.lineStart)[: a:range.colStart - 1]
-    let l:suffix = getline(a:range.lineEnd)[a:range.colEnd - 1:]
-    return {"prefix": l:prefix, "suffix": l:suffix}
+    let l:textStart = getline(a:range.lineStart)
+    let l:textEnd   = getline(a:range.lineEnd)
+
+    let l:indent = match(l:textStart, "\\S")
+    let l:prefix = l:textStart[l:indent : a:range.colStart - 1]
+    let l:suffix = l:textEnd[a:range.colEnd - 1:]
+
+    return {"indent": l:indent, "prefix": l:prefix, "suffix": l:suffix}
 endfunction
 
 function! argwrap#wrapContainer(range, container, arguments)
     let l:argCount = len(a:arguments)
+    let l:padding  = repeat(" ", a:container.indent)
     let l:line     = a:range.lineStart
 
-    call setline(l:line, a:container.prefix)
+    call setline(l:line, l:padding . a:container.prefix)
     for l:index in range(l:argCount)
-        let l:text = a:arguments[l:index]
+        let l:text = l:padding . a:arguments[l:index]
         if l:index < l:argCount - 1
             let l:text .= ","
         endif
@@ -152,11 +157,11 @@ function! argwrap#wrapContainer(range, container, arguments)
         let l:line += 1
         exec printf("%s>", l:line)
     endfor
-    call append(l:line, a:container.suffix)
+    call append(l:line, l:padding . a:container.suffix)
 endfunction
 
 function! argwrap#unwrapContainer(range, container, arguments)
-    let l:text = a:container.prefix . join(a:arguments, ", ") . a:container.suffix
+    let l:text = repeat(" ", a:container.indent) . a:container.prefix . join(a:arguments, ", ") . a:container.suffix
     call setline(a:range.lineStart, l:text)
     exec printf("%d,%dd", a:range.lineStart + 1, a:range.lineEnd)
 endfunction
