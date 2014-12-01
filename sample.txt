@@ -1,15 +1,18 @@
 a = Foo(a, [b, z], "hello, world", c)
 
+Foo(a, b)
+
 Foo(
     a,
-    b
+    [b, c],
+    d
 )
 
-Foo(a, [b, c], d)
+Foo(a, [b, "c"], d)
 
 Foo(
     a,
-    [b, "c"],
+    [b, c],
     d
 )
 
@@ -18,5 +21,3 @@ Foo(
     [b, c],
     d
 )
-
-Foo(a, [b, c], d)

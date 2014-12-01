@@ -18,10 +18,52 @@
 " CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-function! argwrap#findRange()
-    let [l:lineStart, l:colStart] = searchpairpos("(", "", ")", "Wnb")
-    let [l:lineEnd,   l:colEnd]   = searchpairpos("(", "", ")", "Wn")
+function! argwrap#validateRange(range)
+    return len(a:range) > 0 && !(a:range.lineStart == 0 && a:range.colStart == 0 || a:range.lineEnd == 0 && a:range.colEnd == 0)
+endfunction
+
+function! argwrap#compareRanges(range1, range2)
+    let [l:buffer, l:line, l:col, l:offset] = getpos(".")
+
+    let l:lineDiff1 = a:range1.lineStart - l:line
+    let l:colDiff1  = a:range1.colStart - l:col
+    let l:lineDiff2 = a:range2.lineStart - l:line
+    let l:colDiff2  = a:range2.colStart - l:col
+
+    if l:lineDiff1 < l:lineDiff2
+        return 1
+    elseif l:lineDiff1 > l:lineDiff2
+        return -1
+    elseif l:colDiff1 < l:colDiff2
+        return 1
+    elseif l:colDiff1 > l:colDiff2
+        return -1
+    else
+        return 0
+    endif
+endfunction
+
+function! argwrap#findRange(braces)
+    let [l:lineStart, l:colStart] = searchpairpos(a:braces[0], "", a:braces[1], "Wnb")
+    let [l:lineEnd,   l:colEnd]   = searchpairpos(a:braces[0], "", a:braces[1], "Wn")
     return {"lineStart": l:lineStart, "colStart": l:colStart, "lineEnd": l:lineEnd, "colEnd": l:colEnd}
+endfunction
+
+function! argwrap#findClosestRange()
+    let l:ranges = []
+
+    for l:braces in [["(", ")"], ["\\[", "\\]"], ["{", "}"]]
+        let l:range = argwrap#findRange(braces)
+        if argwrap#validateRange(l:range)
+            call add(l:ranges, l:range)
+        endif
+    endfor
+
+    if len(l:ranges) == 0
+        return {}
+    else
+        return sort(l:ranges, "argwrap#compareRanges")[0]
+    endif
 endfunction
 
 function! argwrap#extractArgumentText(range)
@@ -120,8 +162,8 @@ function! argwrap#unwrapContainer(range, container, arguments)
 endfunction
 
 function! argwrap#toggle()
-    let l:range = argwrap#findRange()
-    if l:range.lineStart == 0 && l:range.colStart == 0 || l:range.lineEnd == 0 && l:range.colEnd == 0
+    let l:range = argwrap#findClosestRange()
+    if !argwrap#validateRange(l:range)
         return
     endif
 
