@@ -1,4 +1,4 @@
-Foo(a, b, c)
+Foo(a, [b, z], c)
 
 Foo(
     a,
@@ -15,7 +15,7 @@ Foo(
     a,
     [
         b,
-        c
+        "c"
     ],
     d
 )

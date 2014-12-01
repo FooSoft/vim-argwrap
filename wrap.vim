@@ -47,7 +47,10 @@ function! ExtractText(range)
         endif
 
         if l:extractStart < l:extractEnd
-            let l:text .= l:lineText[l:extractStart : l:extractEnd - 1]
+            let l:extract = l:lineText[l:extractStart : l:extractEnd - 1]
+            let l:extract = substitute(l:extract, "^\\s\\+", "", "g")
+            let l:extract = substitute(l:extract, ",$", ", ", "g")
+            let l:text .= l:extract
         endif
     endfor
 
@@ -65,6 +68,12 @@ function! UpdateScopeStack(stack, char)
     endif
 endfunction
 
+function! StripArgument(text)
+    let l:stripped = substitute(a:text, "\\s\\+", "", "")
+    let l:stripped = substitute(l:stripped, "^\\s\\+", "", "")
+    return l:stripped
+endfunction
+
 function! ExtractArguments(text)
     let l:stack     = []
     let l:arguments = []
@@ -75,14 +84,14 @@ function! ExtractArguments(text)
         call UpdateScopeStack(l:stack, l:char)
 
         if len(l:stack) == 0 && l:char == ","
-            call add(l:arguments, l:argument)
+            call add(l:arguments, StripArgument(l:argument))
             let l:argument = ""
         else
             let l:argument .= l:char
         endif
     endfor
 
-    call add(l:arguments, l:argument)
+    call add(l:arguments, StripArgument(l:argument))
     return l:arguments
 endfunction
 
