@@ -99,7 +99,7 @@ function! argwrap#wrapContainer(range, container, arguments)
     let l:line = a:range.lineStart
     call setline(l:line, a:container.prefix)
     for l:argument in a:arguments
-        call append(l:line, l:argument)
+        call append(l:line, l:argument . ",")
         let l:line += 1
         exec printf("%s>", l:line)
     endfor
@@ -112,20 +112,19 @@ function! argwrap#unwrapContainer(range, container, arguments)
     exec printf("%d,%dd", a:range.lineStart + 1, a:range.lineEnd)
 endfunction
 
-function! argwrap#Unwrap()
-    let l:range     = argwrap#findRange()
+function! argwrap#toggle()
+    let l:range = argwrap#findRange()
+    if l:range.lineStart == l:range.lineEnd && l:range.colStart == l:range.colEnd
+        return
+    endif
+
     let l:argText   = argwrap#extractArgumentText(l:range)
     let l:arguments = argwrap#extractArguments(l:argText)
     let l:container = argwrap#extractContainer(l:range)
 
-    call argwrap#unwrapContainer(l:range, l:container, l:arguments)
-endfunction
-
-function! argwrap#Wrap()
-    let l:range     = argwrap#findRange()
-    let l:argText   = argwrap#extractArgumentText(l:range)
-    let l:arguments = argwrap#extractArguments(l:argText)
-    let l:container = argwrap#extractContainer(l:range)
-
-    call argwrap#wrapContainer(l:range, l:container, l:arguments)
+    if l:range.lineStart == l:range.lineEnd
+        call argwrap#wrapContainer(l:range, l:container, l:arguments)
+    else
+        call argwrap#unwrapContainer(l:range, l:container, l:arguments)
+    endif
 endfunction

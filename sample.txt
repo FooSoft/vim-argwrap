@@ -1,9 +1,6 @@
-a = Foo(a, [b, z], "hello, world", c)
+a = Foo(a, [b, z], "hello, world", c, )
 
-Foo(
-    a
-    b
-)
+Foo(a, b)
 
 Foo(
     a,
