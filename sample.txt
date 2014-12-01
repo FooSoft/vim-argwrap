@@ -1,7 +1,7 @@
 a = Foo(a, [b, z], "hello, world", c)
 
 Foo(
-    a,
+    a
     b
 )
 

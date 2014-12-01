@@ -18,13 +18,13 @@
 " CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-function! argwrap#FindRange()
+function! argwrap#findRange()
     let [l:lineStart, l:colStart] = searchpairpos("(", "", ")", "Wnb")
     let [l:lineEnd,   l:colEnd]   = searchpairpos("(", "", ")", "Wn")
     return {"lineStart": l:lineStart, "colStart": l:colStart, "lineEnd": l:lineEnd, "colEnd": l:colEnd}
 endfunction
 
-function! argwrap#ExtractArgumentText(range)
+function! argwrap#extractArgumentText(range)
     let l:text = ""
 
     for l:lineIndex in range(a:range.lineStart, a:range.lineEnd)
@@ -51,7 +51,7 @@ function! argwrap#ExtractArgumentText(range)
     return l:text
 endfunction
 
-function! argwrap#UpdateScope(stack, char)
+function! argwrap#updateScope(stack, char)
     let l:pairs  = {"\"": "\"", "\'": "\'", ")": "(", "]": "[", "}": "{"}
     let l:length = len(a:stack)
 
@@ -62,40 +62,40 @@ function! argwrap#UpdateScope(stack, char)
     endif
 endfunction
 
-function! argwrap#TrimArgument(text)
+function! argwrap#trimArgument(text)
     let l:stripped = substitute(a:text, "\\s\\+", "", "")
     let l:stripped = substitute(l:stripped, "^\\s\\+", "", "")
     return l:stripped
 endfunction
 
-function! argwrap#ExtractArguments(text)
+function! argwrap#extractArguments(text)
     let l:stack     = []
     let l:arguments = []
     let l:argument  = ""
 
     for l:index in range(strlen(a:text))
         let l:char = a:text[l:index]
-        call UpdateScope(l:stack, l:char)
+        call argwrap#updateScope(l:stack, l:char)
 
         if len(l:stack) == 0 && l:char == ","
-            call add(l:arguments, TrimArgument(l:argument))
+            call add(l:arguments, argwrap#trimArgument(l:argument))
             let l:argument = ""
         else
             let l:argument .= l:char
         endif
     endfor
 
-    call add(l:arguments, TrimArgument(l:argument))
+    call add(l:arguments, argwrap#trimArgument(l:argument))
     return l:arguments
 endfunction
 
-function! argwrap#ExtractContainer(range)
+function! argwrap#extractContainer(range)
     let l:prefix = getline(a:range.lineStart)[: a:range.colStart - 1]
     let l:suffix = getline(a:range.lineEnd)[a:range.colEnd - 1:]
     return {"prefix": l:prefix, "suffix": l:suffix}
 endfunction
 
-function! argwrap#WrapContainer(range, container, arguments)
+function! argwrap#wrapContainer(range, container, arguments)
     let l:line = a:range.lineStart
     call setline(l:line, a:container.prefix)
     for l:argument in a:arguments
@@ -106,26 +106,26 @@ function! argwrap#WrapContainer(range, container, arguments)
     call append(l:line, a:container.suffix)
 endfunction
 
-function! argwrap#UnwrapContainer(range, container, arguments)
+function! argwrap#unwrapContainer(range, container, arguments)
     let l:text = a:container.prefix . join(a:arguments, ", ") . a:container.suffix
     call setline(a:range.lineStart, l:text)
     exec printf("%d,%dd", a:range.lineStart + 1, a:range.lineEnd)
 endfunction
 
 function! argwrap#Unwrap()
-    let l:range     = FindRange()
-    let l:argText   = ExtractArgumentText(l:range)
-    let l:arguments = ExtractArguments(l:argText)
-    let l:container = ExtractContainer(l:range)
+    let l:range     = argwrap#findRange()
+    let l:argText   = argwrap#extractArgumentText(l:range)
+    let l:arguments = argwrap#extractArguments(l:argText)
+    let l:container = argwrap#extractContainer(l:range)
 
-    call UnwrapContainer(l:range, l:container, l:arguments)
+    call argwrap#unwrapContainer(l:range, l:container, l:arguments)
 endfunction
 
 function! argwrap#Wrap()
-    let l:range     = FindRange()
-    let l:argText   = ExtractArgumentText(l:range)
-    let l:arguments = ExtractArguments(l:argText)
-    let l:container = ExtractContainer(l:range)
+    let l:range     = argwrap#findRange()
+    let l:argText   = argwrap#extractArgumentText(l:range)
+    let l:arguments = argwrap#extractArguments(l:argText)
+    let l:container = argwrap#extractContainer(l:range)
 
-    call WrapContainer(l:range, l:container, l:arguments)
+    call argwrap#wrapContainer(l:range, l:container, l:arguments)
 endfunction
