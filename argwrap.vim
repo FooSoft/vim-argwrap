@@ -121,7 +121,7 @@ endfunction
 
 function! argwrap#toggle()
     let l:range = argwrap#findRange()
-    if l:range.lineStart == l:range.lineEnd && l:range.colStart == l:range.colEnd
+    if l:range.lineStart == 0 && l:range.colStart == 0 || l:range.lineEnd == 0 && l:range.colEnd == 0
         return
     endif
 
