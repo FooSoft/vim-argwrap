@@ -62,7 +62,7 @@ function! UpdateScopeStack(stack, char)
     endif
 endfunction
 
-function! StripArgument(text)
+function! TrimArgument(text)
     let l:stripped = substitute(a:text, "\\s\\+", "", "")
     let l:stripped = substitute(l:stripped, "^\\s\\+", "", "")
     return l:stripped
@@ -78,38 +78,47 @@ function! ExtractArguments(text)
         call UpdateScopeStack(l:stack, l:char)
 
         if len(l:stack) == 0 && l:char == ","
-            call add(l:arguments, StripArgument(l:argument))
+            call add(l:arguments, TrimArgument(l:argument))
             let l:argument = ""
         else
             let l:argument .= l:char
         endif
     endfor
 
-    call add(l:arguments, StripArgument(l:argument))
+    call add(l:arguments, TrimArgument(l:argument))
     return l:arguments
 endfunction
 
 function! ExtractContainer(range)
-    let l:line   = getline(a:range.lineStart)
-    let l:prefix = l:line[: a:range.colStart - 1]
-
-    let l:line   = getline(a:range.lineEnd)
-    let l:suffix = l:line[a:range.colEnd - 1:]
-
+    let l:prefix = getline(a:range.lineStart)[: a:range.colStart - 1]
+    let l:suffix = getline(a:range.lineEnd)[a:range.colEnd - 1:]
     return {"prefix": l:prefix, "suffix": l:suffix}
 endfunction
 
-function! RebuildContainer(range, container, arguments)
+function! WrapContainer(range, container, arguments)
     let l:line = a:range.lineStart
-
     call setline(l:line, a:container.prefix)
     for l:argument in a:arguments
         call append(l:line, l:argument)
         let l:line += 1
-        call cursor(l:line, 1)
-        normal! >>
+        exec printf("%s>", l:line)
     endfor
     call append(l:line, a:container.suffix)
+endfunction
+
+function! UnwrapContainer(range, container, arguments)
+    let l:text = a:container.prefix . join(a:arguments, ", ") . a:container.suffix
+    call setline(a:range.lineStart, l:text)
+    exec printf("%d,%dd", a:range.lineStart + 1, a:range.lineEnd)
+endfunction
+
+function! Unwrap()
+    let l:range     = FindRange()
+    let l:argText   = ExtractArgumentText(l:range)
+    let l:arguments = ExtractArguments(l:argText)
+    let l:container = ExtractContainer(l:range)
+
+    call UnwrapContainer(l:range, l:container, l:arguments)
 endfunction
 
 function! Wrap()
@@ -118,7 +127,5 @@ function! Wrap()
     let l:arguments = ExtractArguments(l:argText)
     let l:container = ExtractContainer(l:range)
 
-    echo l:arguments
-
-    call RebuildContainer(l:range, l:container, l:arguments)
+    call WrapContainer(l:range, l:container, l:arguments)
 endfunction
