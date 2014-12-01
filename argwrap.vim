@@ -104,9 +104,7 @@ function! argwrap#updateScope(stack, char)
 endfunction
 
 function! argwrap#trimArgument(text)
-    let l:stripped = substitute(a:text, "\\s\\+", "", "")
-    let l:stripped = substitute(l:stripped, "^\\s\\+", "", "")
-    return l:stripped
+    return substitute(a:text, '^\s*\(.\{-}\)\s*$', '\1', '')
 endfunction
 
 function! argwrap#extractArguments(text)

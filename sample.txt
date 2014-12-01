@@ -1,12 +1,16 @@
-    a = Foo("a": 4, "z": 2, [b, z], "hello, world", c)
+    a = Foo(
+        "a": 4,
+        "z": 2,
+        [b, z],
+        "hello, world",
+        c
+    )
+
+Foo(a b, c d)
 
 Foo(a, b)
 
-Foo(
-    a,
-    [b, c],
-    d
-)
+Foo(a, [b, [2, 3] c], d)
 
 Foo(
     a,
