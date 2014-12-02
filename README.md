@@ -1,6 +1,6 @@
 ## vim-argwrap ##
 
-This is an industrial strength argument wrapping and unwrapping extension for the [VIM](http://www.vim.org/) text
+This is an industrial strength argument wrapping and unwrapping extension for the [Vim](http://www.vim.org/) text
 editor. It can be used for collapsing and expanding everything from function calls to array and dictionary definitions.
 
 ### Installation and Usage ###
