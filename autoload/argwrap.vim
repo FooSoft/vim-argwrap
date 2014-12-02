@@ -23,7 +23,7 @@ function! argwrap#validateRange(range)
 endfunction
 
 function! argwrap#compareRanges(range1, range2)
-    let [l:buffer, l:line, l:col, l:offset] = getpos(".")
+    let [l:buffer, l:line, l:col, l:offset] = getpos('.')
 
     let l:lineDiff1 = a:range1.lineStart - l:line
     let l:colDiff1  = a:range1.colStart - l:col
@@ -44,14 +44,14 @@ function! argwrap#compareRanges(range1, range2)
 endfunction
 
 function! argwrap#findRange(braces)
-    let [l:lineStart, l:colStart] = searchpairpos(a:braces[0], "", a:braces[1], "Wnb")
-    let [l:lineEnd,   l:colEnd]   = searchpairpos(a:braces[0], "", a:braces[1], "Wn")
-    return {"lineStart": l:lineStart, "colStart": l:colStart, "lineEnd": l:lineEnd, "colEnd": l:colEnd}
+    let [l:lineStart, l:colStart] = searchpairpos(a:braces[0], '', a:braces[1], 'Wnb')
+    let [l:lineEnd,   l:colEnd]   = searchpairpos(a:braces[0], '', a:braces[1], 'Wn')
+    return {'lineStart': l:lineStart, 'colStart': l:colStart, 'lineEnd': l:lineEnd, 'colEnd': l:colEnd}
 endfunction
 
 function! argwrap#findClosestRange()
     let l:ranges = []
-    for l:braces in [["(", ")"], ["\\[", "\\]"], ["{", "}"]]
+    for l:braces in [['(', ')'], ['\[', '\]'], ['{', '}']]
         let l:range = argwrap#findRange(braces)
         if argwrap#validateRange(l:range)
             call add(l:ranges, l:range)
@@ -61,12 +61,12 @@ function! argwrap#findClosestRange()
     if len(l:ranges) == 0
         return {}
     else
-        return sort(l:ranges, "argwrap#compareRanges")[0]
+        return sort(l:ranges, 'argwrap#compareRanges')[0]
     endif
 endfunction
 
 function! argwrap#extractArgumentText(range)
-    let l:text = ""
+    let l:text = ''
 
     for l:lineIndex in range(a:range.lineStart, a:range.lineEnd)
         let l:lineText = getline(l:lineIndex)
@@ -83,8 +83,8 @@ function! argwrap#extractArgumentText(range)
 
         if l:extractStart < l:extractEnd
             let l:extract = l:lineText[l:extractStart : l:extractEnd - 1]
-            let l:extract = substitute(l:extract, "^\\s\\+", "", "g")
-            let l:extract = substitute(l:extract, ",$", ", ", "g")
+            let l:extract = substitute(l:extract, '^\\s\\+', '', 'g')
+            let l:extract = substitute(l:extract, ',$', ', ', 'g')
             let l:text .= l:extract
         endif
     endfor
@@ -93,10 +93,10 @@ function! argwrap#extractArgumentText(range)
 endfunction
 
 function! argwrap#updateScope(stack, char)
-    let l:pairs  = {"\"": "\"", "\'": "\'", ")": "(", "]": "[", "}": "{"}
+    let l:pairs  = {'"': '"', '''': '''', ')': '(', ']': '[', '}': '{'}
     let l:length = len(a:stack)
 
-    if l:length > 0 && get(l:pairs, a:char, "") == a:stack[l:length - 1]
+    if l:length > 0 && get(l:pairs, a:char, '') == a:stack[l:length - 1]
         call remove(a:stack, l:length - 1)
     elseif index(values(l:pairs), a:char) >= 0
         call add(a:stack, a:char)
@@ -110,15 +110,15 @@ endfunction
 function! argwrap#extractArguments(text)
     let l:stack     = []
     let l:arguments = []
-    let l:argument  = ""
+    let l:argument  = ''
 
     for l:index in range(strlen(a:text))
         let l:char = a:text[l:index]
         call argwrap#updateScope(l:stack, l:char)
 
-        if len(l:stack) == 0 && l:char == ","
+        if len(l:stack) == 0 && l:char == ','
             call add(l:arguments, argwrap#trimArgument(l:argument))
-            let l:argument = ""
+            let l:argument = ''
         else
             let l:argument .= l:char
         endif
@@ -167,8 +167,8 @@ endfunction
 function! argwrap#toggle()
     let l:range = argwrap#findClosestRange()
     if !argwrap#validateRange(l:range)
-        call search('[\(\[\{]')
-        call search('[^\(\[\{]')
+        call search('[\(\[\{]', 'W')
+        call search('[^\(\[\{]', 'W')
         let l:range = argwrap#findClosestRange()
         if !argwrap#validateRange(l:range)
             return
