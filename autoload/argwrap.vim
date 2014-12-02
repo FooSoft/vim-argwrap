@@ -161,7 +161,7 @@ endfunction
 function! argwrap#unwrapContainer(range, container, arguments)
     let l:text = repeat(' ', a:container.indent) . a:container.prefix . join(a:arguments, ', ') . a:container.suffix
     call setline(a:range.lineStart, l:text)
-    exec printf('%d,%dd_', a:range.lineStart + 1, a:range.lineEnd)
+    exec printf('silent %d,%dd_', a:range.lineStart + 1, a:range.lineEnd)
 endfunction
 
 function! argwrap#adjustCursor()
