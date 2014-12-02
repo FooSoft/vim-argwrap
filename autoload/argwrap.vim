@@ -132,42 +132,47 @@ function! argwrap#extractContainer(range)
     let l:textStart = getline(a:range.lineStart)
     let l:textEnd   = getline(a:range.lineEnd)
 
-    let l:indent = match(l:textStart, "\\S")
+    let l:indent = match(l:textStart, '\S')
     let l:prefix = l:textStart[l:indent : a:range.colStart - 1]
     let l:suffix = l:textEnd[a:range.colEnd - 1:]
 
-    return {"indent": l:indent, "prefix": l:prefix, "suffix": l:suffix}
+    return {'indent': l:indent, 'prefix': l:prefix, 'suffix': l:suffix}
 endfunction
 
 function! argwrap#wrapContainer(range, container, arguments)
     let l:argCount = len(a:arguments)
-    let l:padding  = repeat(" ", a:container.indent)
+    let l:padding  = repeat(' ', a:container.indent)
     let l:line     = a:range.lineStart
 
     call setline(l:line, l:padding . a:container.prefix)
     for l:index in range(l:argCount)
         let l:text = l:padding . a:arguments[l:index]
         if l:index < l:argCount - 1
-            let l:text .= ","
+            let l:text .= ','
         endif
 
         call append(l:line, l:text)
         let l:line += 1
-        exec printf("%s>", l:line)
+        exec printf('%s>', l:line)
     endfor
     call append(l:line, l:padding . a:container.suffix)
 endfunction
 
 function! argwrap#unwrapContainer(range, container, arguments)
-    let l:text = repeat(" ", a:container.indent) . a:container.prefix . join(a:arguments, ", ") . a:container.suffix
+    let l:text = repeat(' ', a:container.indent) . a:container.prefix . join(a:arguments, ', ') . a:container.suffix
     call setline(a:range.lineStart, l:text)
-    exec printf("%d,%dd", a:range.lineStart + 1, a:range.lineEnd)
+    exec printf('%d,%dd_', a:range.lineStart + 1, a:range.lineEnd)
 endfunction
 
 function! argwrap#toggle()
     let l:range = argwrap#findClosestRange()
     if !argwrap#validateRange(l:range)
-        return
+        call search('[\(\[\{]')
+        call search('[^\(\[\{]')
+        let l:range = argwrap#findClosestRange()
+        if !argwrap#validateRange(l:range)
+            return
+        endif
     endif
 
     let l:argText   = argwrap#extractArgumentText(l:range)
