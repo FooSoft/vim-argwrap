@@ -179,8 +179,9 @@ function! argwrap#adjustCursor()
 endfunction
 
 function! argwrap#toggle()
-    call argwrap#adjustCursor()
+    let l:cursor = getpos('.')
 
+    call argwrap#adjustCursor()
     let l:range = argwrap#findClosestRange()
     if !argwrap#validateRange(l:range)
         return
@@ -188,11 +189,16 @@ function! argwrap#toggle()
 
     let l:argText   = argwrap#extractContainerArgText(l:range)
     let l:arguments = argwrap#extractContainerArgs(l:argText)
-    let l:container = argwrap#extractContainer(l:range)
+    if len(l:arguments) == 0
+        return
+    endif
 
+    let l:container = argwrap#extractContainer(l:range)
     if l:range.lineStart == l:range.lineEnd
         call argwrap#wrapContainer(l:range, l:container, l:arguments)
     else
         call argwrap#unwrapContainer(l:range, l:container, l:arguments)
     endif
+
+    call setpos('.', l:cursor)
 endfunction
