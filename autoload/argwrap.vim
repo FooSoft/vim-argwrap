@@ -83,7 +83,7 @@ function! argwrap#extractContainerArgText(range)
 
         if l:extractStart < l:extractEnd
             let l:extract = l:lineText[l:extractStart : l:extractEnd - 1]
-            let l:extract = substitute(l:extract, '^\\s\\+', '', 'g')
+            let l:extract = substitute(l:extract, '^\s\+', '', 'g')
             let l:extract = substitute(l:extract, ',$', ', ', 'g')
             let l:text .= l:extract
         endif
