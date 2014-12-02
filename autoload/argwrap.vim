@@ -45,7 +45,7 @@ endfunction
 
 function! argwrap#findRange(braces)
     let [l:lineStart, l:colStart] = searchpairpos(a:braces[0], '', a:braces[1], 'Wnb')
-    let [l:lineEnd,   l:colEnd]   = searchpairpos(a:braces[0], '', a:braces[1], 'Wn')
+    let [l:lineEnd,   l:colEnd]   = searchpairpos(a:braces[0], '', a:braces[1], 'Wcn')
     return {'lineStart': l:lineStart, 'colStart': l:colStart, 'lineEnd': l:lineEnd, 'colEnd': l:colEnd}
 endfunction
 
@@ -164,24 +164,9 @@ function! argwrap#unwrapContainer(range, container, arguments)
     exec printf('silent %d,%dd_', a:range.lineStart + 1, a:range.lineEnd)
 endfunction
 
-function! argwrap#adjustCursor()
-    let [l:buffer, l:line, l:col, l:offset] = getpos('.')
-    let l:lineText = getline('.')
-
-    let l:col = match(l:lineText, '[\(\[\{]')
-    if l:col >= 0
-        if l:col + 1 == strlen(l:lineText)
-            call cursor(l:line + 1, 0)
-        else
-            call cursor(l:line, l:col + 2)
-        endif
-    endif
-endfunction
-
 function! argwrap#toggle()
     let l:cursor = getpos('.')
 
-    call argwrap#adjustCursor()
     let l:range = argwrap#findClosestRange()
     if !argwrap#validateRange(l:range)
         return
