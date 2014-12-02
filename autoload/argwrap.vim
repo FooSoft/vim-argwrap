@@ -65,7 +65,7 @@ function! argwrap#findClosestRange()
     endif
 endfunction
 
-function! argwrap#extractArgumentText(range)
+function! argwrap#extractContainerArgText(range)
     let l:text = ''
 
     for l:lineIndex in range(a:range.lineStart, a:range.lineEnd)
@@ -107,7 +107,7 @@ function! argwrap#trimArgument(text)
     return substitute(a:text, '^\s*\(.\{-}\)\s*$', '\1', '')
 endfunction
 
-function! argwrap#extractArguments(text)
+function! argwrap#extractContainerArgs(text)
     let l:stack     = []
     let l:arguments = []
     let l:argument  = ''
@@ -164,19 +164,30 @@ function! argwrap#unwrapContainer(range, container, arguments)
     exec printf('%d,%dd_', a:range.lineStart + 1, a:range.lineEnd)
 endfunction
 
-function! argwrap#toggle()
-    let l:range = argwrap#findClosestRange()
-    if !argwrap#validateRange(l:range)
-        call search('[\(\[\{]', 'W')
-        call search('[^\(\[\{]', 'W')
-        let l:range = argwrap#findClosestRange()
-        if !argwrap#validateRange(l:range)
-            return
+function! argwrap#adjustCursor()
+    let [l:buffer, l:line, l:col, l:offset] = getpos('.')
+    let l:lineText = getline('.')
+
+    let l:col = match(l:lineText, '[\(\[\{]')
+    if l:col >= 0
+        if l:col + 1 == strlen(l:lineText)
+            call cursor(l:line + 1, 0)
+        else
+            call cursor(l:line, l:col + 2)
         endif
     endif
+endfunction
 
-    let l:argText   = argwrap#extractArgumentText(l:range)
-    let l:arguments = argwrap#extractArguments(l:argText)
+function! argwrap#toggle()
+    call argwrap#adjustCursor()
+
+    let l:range = argwrap#findClosestRange()
+    if !argwrap#validateRange(l:range)
+        return
+    endif
+
+    let l:argText   = argwrap#extractContainerArgText(l:range)
+    let l:arguments = argwrap#extractContainerArgs(l:argText)
     let l:container = argwrap#extractContainer(l:range)
 
     if l:range.lineStart == l:range.lineEnd
