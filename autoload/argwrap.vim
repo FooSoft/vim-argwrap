@@ -139,23 +139,47 @@ function! argwrap#extractContainer(range)
     return {'indent': l:indent, 'prefix': l:prefix, 'suffix': l:suffix}
 endfunction
 
-function! argwrap#wrapContainer(range, container, arguments)
+function! argwrap#wrapContainer(range, container, arguments, style)
     let l:argCount = len(a:arguments)
     let l:padding  = repeat(' ', a:container.indent)
     let l:line     = a:range.lineStart
 
-    call setline(l:line, l:padding . a:container.prefix)
-    for l:index in range(l:argCount)
-        let l:text = l:padding . a:arguments[l:index]
-        if l:index < l:argCount - 1
-            let l:text .= ','
+    if a:style ==? 'default'
+        call setline(l:line, l:padding . a:container.prefix)
+
+        for l:index in range(l:argCount)
+            let l:text = l:padding . a:arguments[l:index]
+            if l:index < l:argCount - 1
+                let l:text .= ','
+            endif
+
+            call append(l:line, l:text)
+            let l:line += 1
+            exec printf('%s>', l:line)
+        endfor
+
+        call append(l:line, l:padding . a:container.suffix)
+    elseif a:style ==? 'bx'
+        let l:lineText = l:padding . a:container.prefix
+        if l:argCount > 0
+            let l:lineText .= a:arguments[0]
+            let l:arguments = a:arguments[1:]
+            let l:argCount -= 1
         endif
 
-        call append(l:line, l:text)
-        let l:line += 1
-        exec printf('%s>', l:line)
-    endfor
-    call append(l:line, l:padding . a:container.suffix)
+        call setline(l:line, l:lineText)
+
+        for l:index in range(l:argCount)
+            let l:text = ', ' . l:padding . l:arguments[l:index]
+
+            call append(l:line, l:text)
+            let l:line += 1
+            exec printf('%s>', l:line)
+        endfor
+
+        call append(l:line, l:padding . a:container.suffix)
+        exec printf('%s>', l:line + 1)
+    endif
 endfunction
 
 function! argwrap#unwrapContainer(range, container, arguments)
@@ -164,7 +188,8 @@ function! argwrap#unwrapContainer(range, container, arguments)
     exec printf('silent %d,%dd_', a:range.lineStart + 1, a:range.lineEnd)
 endfunction
 
-function! argwrap#toggle()
+function! argwrap#toggle(...)
+    let l:style  = a:0 == 0 ? 'default' : 'bx'
     let l:cursor = getpos('.')
 
     let l:range = argwrap#findClosestRange()
@@ -180,7 +205,7 @@ function! argwrap#toggle()
 
     let l:container = argwrap#extractContainer(l:range)
     if l:range.lineStart == l:range.lineEnd
-        call argwrap#wrapContainer(l:range, l:container, l:arguments)
+        call argwrap#wrapContainer(l:range, l:container, l:arguments, l:style)
     else
         call argwrap#unwrapContainer(l:range, l:container, l:arguments)
     endif
