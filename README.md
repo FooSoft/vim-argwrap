@@ -9,12 +9,12 @@ editor. It can be used for collapsing and expanding everything from function cal
     If you are using [pathogen](https://github.com/tpope/vim-pathogen) for plugin management (you should) you can clone
     the repository directly to your bundle directory:
 
-    `git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap`.
+    `git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap`
 
 2.  Create a keyboard binding for `argwrap#toggle()` inside your `~/.vimrc` file. For example, to declare a normal
     mode mapping, add the following command:
 
-    `nnoremap <silent> <leader>w :call argwrap#toggle()<CR>`.
+    `nnoremap <silent> <leader>w :call argwrap#toggle()<CR>`
 
 3.  Position the cursor *inside* of the scope of the parenthesis, brackets or curly braces you wish to wrap/unwrap (not
     on top or before or after them).
