@@ -5,9 +5,9 @@ editor. It can be used for collapsing and expanding everything from function cal
 
 ### Installation and Usage ###
 
-1.  Clone or otherwise download the *vim-argwrap* extension from the [GitHub](https://github.com/FooSoft/vim-argwrap).
-    If you are using [pathogen](https://github.com/tpope/vim-pathogen) for plugin management (you should) you can clone
-    the repository directly to your bundle directory:
+1.  Clone or otherwise download the *vim-argwrap* extension from [GitHub](https://github.com/FooSoft/vim-argwrap).  If
+    you are using [pathogen](https://github.com/tpope/vim-pathogen) for plugin management (you should) you can clone the
+    repository directly to your bundle directory:
 
     `git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap`
 
@@ -27,8 +27,8 @@ Below are some examples of common use cases demonstrating the capabilities of vi
 functions identically regardless if it is being used on a function call, list or dictionary definitions.
 
 Let's begin with a simple function invocation. When there are many arguments being passed to the function, we often wish
-to wrap them to improve code readability. If you position your cursor anywhere between the `(` and `)` parenthesis and
-execute the `argwrap#toggle()` command, the argument list will be wrapped to one per line.
+to wrap them to improve code readability. If you position your cursor anywhere between the parenthesis and execute the
+`argwrap#toggle()` command, the argument list will be wrapped to one per line.
 
 ```
 Foo('wibble', 'wobble', 'wubble')
