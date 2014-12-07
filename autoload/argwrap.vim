@@ -188,7 +188,7 @@ function! argwrap#unwrapContainer(range, container, arguments)
 endfunction
 
 function! argwrap#toggle(...)
-    let l:style  = a:0 == 0 ? 'default' : 'bx'
+    let l:style  = a:0 == 0 ? 'default' : a:1
     let l:cursor = getpos('.')
 
     let l:range = argwrap#findClosestRange()
