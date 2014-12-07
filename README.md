@@ -1,15 +1,20 @@
-# vim-argwrap #
+# argwrap.vim
 
-vim-argwrap is an industrial strength argument wrapping and unwrapping extension for the [Vim](http://www.vim.org/) text
+argwrap.vim is an industrial strength argument wrapping and unwrapping extension for the [Vim](http://www.vim.org/) text
 editor. It can be used for collapsing and expanding everything from function calls to array and dictionary definitions.
+The online resources listed below can be accessed to download new versions of this extension and to access other related
+information.
+
+*   [Homepage](http://foosoft.net/projects/vim-argwrap/)
+*   [GitHub](https://github.com/FooSoft/vim-argwrap/)
 
 ## Installation ##
 
-1.  Clone or otherwise download the latest version of the *vim-argwrap* extension from its
+1.  Clone or otherwise download the latest version of the *argwrap.vim* extension from its
     [GitHub](https://github.com/FooSoft/vim-argwrap) page (the script is also available for download through
     [vim.org](http://www.vim.org/scripts/script.php?script_id=5062)). If you are using
-    [pathogen](https://github.com/tpope/vim-pathogen) for plugin management (you should) you can clone the repository
-    directly to your bundle directory:
+    [pathogen.vim](https://github.com/tpope/vim-pathogen) for plugin management (you should) you can clone the
+    repository directly to your bundle directory:
 
     `git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap`
 
@@ -32,7 +37,7 @@ editor. It can be used for collapsing and expanding everything from function cal
     )
     ```
 
-    *BX-style* argument wrapping:
+    *Bx-style* argument wrapping:
 
     ```
     Foo(wibble
@@ -50,7 +55,7 @@ editor. It can be used for collapsing and expanding everything from function cal
 
 ## Examples ##
 
-Below are some examples of common use cases demonstrating the capabilities of vim-argwrap. Note that the extension
+Below are some examples of common use cases demonstrating the capabilities of argwrap.vim. Note that the extension
 functions identically regardless if it is being applied to a function call, list or dictionary definition.
 
 Let's begin with a simple function invocation. When there are many arguments being passed to the function, we often wish
