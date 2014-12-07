@@ -22,8 +22,6 @@ access other information.
 ================================================================================
 INSTALLATION                                              *argwrap-installation*
 
-## Installation ##
-
 1.  Clone or otherwise download the latest version of the argwrap.vim extension
     from its GitHub page (the script is also available for download through
     vim.org.  If you are using pathogen.vim for plugin management (you should)
