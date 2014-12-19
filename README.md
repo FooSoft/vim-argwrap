@@ -7,6 +7,7 @@ information.
 
 *   [Homepage](http://foosoft.net/projects/vim-argwrap/)
 *   [GitHub](https://github.com/FooSoft/vim-argwrap/)
+*   [vim.org](http://www.vim.org/scripts/script.php?script_id=5062)
 
 ## Installation ##
 
