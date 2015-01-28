@@ -194,11 +194,11 @@ function! argwrap#unwrapContainer(range, container, arguments, padded)
     exec printf('silent %d,%dd_', a:range.lineStart + 1, a:range.lineEnd)
 endfunction
 
-function! argwrap#toggle(...)
+function! argwrap#toggle()
     if exists('g:argwrap_wrap_style')
         let l:style = g:argwrap_wrap_style
     else
-        let l:style  = a:0 == 0 ? 'default' : a:1
+        let l:style = 'default'
     endif
 
     if exists('g:argwrap_padded_braces')
