@@ -181,14 +181,32 @@ function! argwrap#wrapContainer(range, container, arguments, style)
     endif
 endfunction
 
-function! argwrap#unwrapContainer(range, container, arguments)
-    let l:text = a:container.indent . a:container.prefix . join(a:arguments, ', ') . a:container.suffix
+function! argwrap#unwrapContainer(range, container, arguments, padded)
+    let l:brace = a:container.prefix[strlen(a:container.prefix) - 1]
+    if stridx(a:padded, l:brace) == -1
+        let l:padding = ''
+    else
+        let l:padding = ' '
+    endif
+
+    let l:text = a:container.indent . a:container.prefix . l:padding . join(a:arguments, ', ') . l:padding . a:container.suffix
     call setline(a:range.lineStart, l:text)
     exec printf('silent %d,%dd_', a:range.lineStart + 1, a:range.lineEnd)
 endfunction
 
 function! argwrap#toggle(...)
-    let l:style  = a:0 == 0 ? 'default' : a:1
+    if exists('g:argwrap_wrap_style')
+        let l:style = g:argwrap_wrap_style
+    else
+        let l:style  = a:0 == 0 ? 'default' : a:1
+    endif
+
+    if exists('g:argwrap_padded_braces')
+        let l:padded = g:argwrap_padded_braces
+    else
+        let l:padded = ''
+    endif
+
     let l:cursor = getpos('.')
 
     let l:range = argwrap#findClosestRange()
@@ -206,7 +224,7 @@ function! argwrap#toggle(...)
     if l:range.lineStart == l:range.lineEnd
         call argwrap#wrapContainer(l:range, l:container, l:arguments, l:style)
     else
-        call argwrap#unwrapContainer(l:range, l:container, l:arguments)
+        call argwrap#unwrapContainer(l:range, l:container, l:arguments, l:padded)
     endif
 
     call setpos('.', l:cursor)
