@@ -229,5 +229,3 @@ function! argwrap#toggle(...)
 
     call setpos('.', l:cursor)
 endfunction
-
-command ArgWrap call argwrap#toggle()
