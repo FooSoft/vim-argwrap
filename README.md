@@ -19,10 +19,10 @@ information.
 
     `git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap`
 
-2.  Create a keyboard binding for `argwrap#toggle()` inside your `~/.vimrc` file. For example, to declare a normal
+2.  Create a keyboard binding for the `ArgWrap` command inside your `~/.vimrc` file. For example, to declare a normal
     mode mapping, add the following command:
 
-    `nnoremap <silent> <leader>w :call argwrap#toggle()<CR>`
+    `nnoremap <silent> <leader>a :ArgWrap<CR>`
 
 3.  You can customize the wrapping/unwrapping behavior of this extension by setting values for any of the following
     optional global variables in your `.vimrc` file:
@@ -88,7 +88,7 @@ functions identically regardless if it is being applied to a function call, list
 
 Let's begin with a simple function invocation. When there are many arguments being passed to the function, we often wish
 to wrap them to improve code readability. If you position your cursor anywhere between the parenthesis and execute the
-`argwrap#toggle()` command, the argument list will be wrapped to one per line.
+`ArgWrap` command, the argument list will be wrapped to one per line.
 
 ```
 Foo(wibble, wobble, wubble)
