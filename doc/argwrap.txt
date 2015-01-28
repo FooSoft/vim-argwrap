@@ -35,25 +35,46 @@ INSTALLATION                                              *argwrap-installation*
 
     nnoremap <silent> <leader>w :call argwrap#toggle()<CR>
 
-    The toggle function receives an optional style argument, which may be either
-    "default" or "bx". Not providing an explicit value is equivalent to
-    specifying the "default" setting. The style determines the wrapping behavior
-    as seen below:
+3.  You can customize the wrapping/unwrapping behavior of this extension by
+    setting values for any of the following optional global variables in your
+    .vimrc file:
 
-    Default-style argument wrapping:
+    *   g:argwrap_wrap_style
 
-    Foo(
-        wibble,
-        wobble,
-        wubble
-    )
+        Specifies the style in which arguments should be wrapped.
 
-    Bx-style argument wrapping:
+        'default' argument wrapping:
 
-    Foo(wibble
-        , wobble
-        , wubble
+        Foo(
+            wibble,
+            wobble,
+            wubble
         )
+
+        'bx' argument wrapping:
+
+        Foo(wibble
+            , wobble
+            , wubble
+            )
+
+    *   g:argwrap_padded_braces
+
+        Specifies which brace types should be padded on the inside with spaces:
+
+        '': do not add padding for any braces (empty string):
+
+        [1, 2, 3]
+        {1, 2, 3}
+
+        '[': padding for square braces only (curly braces are not padded):
+
+        [ 1, 2, 3 ]
+        {1, 2, 3}
+
+        Padding can be specified for multiple brace types as follows:
+
+        let g:argwrap_padded_braces = '[{'
 
 ================================================================================
 USAGE                                                            *argwrap-usage*
