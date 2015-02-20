@@ -102,7 +102,8 @@ endfunction
 
 function! argwrap#trimArgument(text)
     let l:trim = substitute(a:text, '^\s*\(.\{-}\)\s*$', '\1', '')
-    return substitute(l:trim, '\([:=]\)\s\{2,}', '\1 ', '')
+    let l:trim = substitute(l:trim, '\([:=]\)\s\{2,}', '\1 ', '')
+    return substitute(l:trim, '\s\{2,}\([:=]\)', ' \1', '')
 endfunction
 
 function! argwrap#extractContainerArgs(text)
