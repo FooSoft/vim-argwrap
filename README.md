@@ -7,9 +7,9 @@ information.
 
 *   [Homepage](http://foosoft.net/projects/vim-argwrap/)
 *   [GitHub](https://github.com/FooSoft/vim-argwrap/)
-*   [vim.org](http://www.vim.org/scripts/script.php?script_id=5062)
+*   [Vim.org](http://www.vim.org/scripts/script.php?script_id=5062)
 
-## Installation ##
+## Installation
 
 1.  Clone or otherwise download the latest version of the *argwrap.vim* extension from its
     [GitHub](https://github.com/FooSoft/vim-argwrap) page (the script is also available for download through
@@ -33,7 +33,7 @@ information.
         languages such as Google's [Go](https://golang.org/project/), which enforce coding style during compliation.
 
         Specifies if the closing brace should be wrapped to a new line. This setting is helpful for languages such as
-        Google's which enforce this style during compliation.
+        Google's [Go](https://golang.org/) which enforce this style during compliation.
 
         Brace wrapping enabled (default)
 
@@ -78,14 +78,14 @@ information.
         let g:argwrap_padded_braces = '[{'
         ```
 
-## Usage ##
+## Usage
 
 1.  Position the cursor *inside* of the scope of the parenthesis, brackets or curly braces you wish to wrap/unwrap (not
     on top, before or after them).
 
 2.  Execute the keyboard binding you defined above to *toggle* the wrapping and unwrapping of arguments.
 
-## Examples ##
+## Examples
 
 Below are some examples of common use cases demonstrating the capabilities of argwrap.vim. Note that the extension
 functions identically regardless if it is being applied to a function call, list or dictionary definition.
