@@ -32,9 +32,6 @@ information.
         Specifies if the closing brace should be wrapped to a new line. This setting is helpful when working with
         languages such as Google's [Go](https://golang.org/project/), which enforce coding style during compliation.
 
-        Specifies if the closing brace should be wrapped to a new line. This setting is helpful for languages such as
-        Google's [Go](https://golang.org/) which enforce this style during compliation.
-
         Brace wrapping enabled (default)
 
         ```

@@ -42,7 +42,7 @@ INSTALLATION                                              *argwrap-installation*
     *   g:argwrap_wrap_closing_brace or b:argwrap_wrap_closing_brace
 
         Specifies if the closing brace should be wrapped to a new line. This
-        setting is helpful when working with languages such as Google's Go
+        setting is helpful when working with languages such as Google's Go,
         which enforce coding style during compliation.
 
         Brace wrapping enabled (default)
