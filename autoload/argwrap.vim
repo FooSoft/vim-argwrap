@@ -139,45 +139,27 @@ function! argwrap#extractContainer(range)
     return {'indent': l:indent, 'prefix': l:prefix, 'suffix': l:suffix}
 endfunction
 
-function! argwrap#wrapContainer(range, container, arguments, style)
+function! argwrap#wrapContainer(range, container, arguments, wrapBrace)
     let l:argCount = len(a:arguments)
     let l:line     = a:range.lineStart
 
-    if a:style ==? 'default'
-        call setline(l:line, a:container.indent . a:container.prefix)
+    call setline(l:line, a:container.indent . a:container.prefix)
 
-        for l:index in range(l:argCount)
-            let l:text = a:container.indent . a:arguments[l:index]
-            if l:index < l:argCount - 1
-                let l:text .= ','
-            endif
-
-            call append(l:line, l:text)
-            let l:line += 1
-            exec printf('%s>', l:line)
-        endfor
-
-        call append(l:line, a:container.indent . a:container.suffix)
-    elseif a:style ==? 'bx'
-        let l:lineText = a:container.indent . a:container.prefix
-        if l:argCount > 0
-            let l:lineText .= a:arguments[0]
-            let l:arguments = a:arguments[1:]
-            let l:argCount -= 1
+    for l:index in range(l:argCount)
+        let l:text = a:container.indent . a:arguments[l:index]
+        if l:index < l:argCount - 1
+            let l:text .= ','
+        elseif !a:wrapBrace
+            let l:text .= a:container.suffix
         endif
 
-        call setline(l:line, l:lineText)
+        call append(l:line, l:text)
+        let l:line += 1
+        exec printf('%s>', l:line)
+    endfor
 
-        for l:index in range(l:argCount)
-            let l:text = a:container.indent . ', ' . l:arguments[l:index]
-
-            call append(l:line, l:text)
-            let l:line += 1
-            exec printf('%s>', l:line)
-        endfor
-
+    if a:wrapBrace
         call append(l:line, a:container.indent . a:container.suffix)
-        exec printf('%s>', l:line + 1)
     endif
 endfunction
 
@@ -195,10 +177,10 @@ function! argwrap#unwrapContainer(range, container, arguments, padded)
 endfunction
 
 function! argwrap#toggle()
-    if exists('g:argwrap_wrap_style')
-        let l:style = g:argwrap_wrap_style
+    if exists('g:argwrap_wrap_closing_brace')
+        let l:wrapBrace = g:argwrap_wrap_closing_brace
     else
-        let l:style = 'default'
+        let l:wrapBrace = 1
     endif
 
     if exists('g:argwrap_padded_braces')
@@ -222,7 +204,7 @@ function! argwrap#toggle()
 
     let l:container = argwrap#extractContainer(l:range)
     if l:range.lineStart == l:range.lineEnd
-        call argwrap#wrapContainer(l:range, l:container, l:arguments, l:style)
+        call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace)
     else
         call argwrap#unwrapContainer(l:range, l:container, l:arguments, l:padded)
     endif

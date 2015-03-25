@@ -27,11 +27,15 @@ information.
 3.  You can customize the wrapping/unwrapping behavior of this extension by setting values for any of the following
     optional global variables in your `.vimrc` file:
 
-    *   `g:argwrap_wrap_style`
+    *   `g:argwrap_wrap_closing_brace`
 
-        Specifies the style in which arguments should be wrapped.
+        Specifies if the closing brace should be wrapped to a new line. This setting is helpful when working with
+        languages such as Google's [Go](https://golang.org/project/), which enforce coding style during compliation.
 
-        `'default'` argument wrapping:
+        Specifies if the closing brace should be wrapped to a new line. This setting is helpful for languages such as
+        Google's which enforce this style during compliation.
+
+        Brace wrapping enabled (default)
 
         ```
         Foo(
@@ -41,13 +45,13 @@ information.
         )
         ```
 
-        `'bx'` argument wrapping:
+        Brace wrapping disabled (`let g:argwrap_wrap_closing_brace = 0`)
 
         ```
-        Foo(wibble
-            , wobble
-            , wubble
-            )
+        Foo(
+            wibble,
+            wobble,
+            wubble)
         ```
 
     *   `g:argwrap_padded_braces`
