@@ -177,13 +177,17 @@ function! argwrap#unwrapContainer(range, container, arguments, padded)
 endfunction
 
 function! argwrap#toggle()
-    if exists('g:argwrap_wrap_closing_brace')
+    if exists('b:argwrap_wrap_closing_brace')
+        let l:wrapBrace = b:argwrap_wrap_closing_brace
+    elseif exists('g:argwrap_wrap_closing_brace')
         let l:wrapBrace = g:argwrap_wrap_closing_brace
     else
         let l:wrapBrace = 1
     endif
 
-    if exists('g:argwrap_padded_braces')
+    if exists('b:argwrap_padded_braces')
+        let l:padded = b:argwrap_padded_braces
+    elseif exists('g:argwrap_padded_braces')
         let l:padded = g:argwrap_padded_braces
     else
         let l:padded = ''
