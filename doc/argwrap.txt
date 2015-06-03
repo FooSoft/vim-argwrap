@@ -16,16 +16,17 @@ from function calls to array and dictionary definitions. The online resources
 listed below can be accessed to download new versions of this extension and to
 access other information.
 
-    Homepage: http://foosoft.net/projects/vim-argwrap/
-    GitHub:   https://github.com/FooSoft/vim-argwrap/
-    vim.org:  http://www.vim.org/scripts/script.php?script_id=5062
+    GitHub:      https://github.com/FooSoft/vim-argwrap/
+    Homepage:    http://foosoft.net/projects/vim-argwrap/
+    Vim Awesome: http://vimawesome.com/plugin/vim-argwrap/
+    Vim.org:     http://www.vim.org/scripts/script.php?script_id=5062
 
 ================================================================================
 INSTALLATION                                              *argwrap-installation*
 
 1.  Clone or otherwise download the latest version of the argwrap.vim extension
     from its GitHub page (the script is also available for download through
-    vim.org.  If you are using pathogen.vim for plugin management (you should)
+    Vim.org. If you are using pathogen.vim for plugin management (you should)
     you can clone the repository directly to your bundle directory:
 
     git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap

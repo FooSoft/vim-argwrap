@@ -5,15 +5,16 @@ editor. It can be used for collapsing and expanding everything from function cal
 The online resources listed below can be accessed to download new versions of this extension and to access other related
 information.
 
-*   [Homepage](http://foosoft.net/projects/vim-argwrap/)
 *   [GitHub](https://github.com/FooSoft/vim-argwrap/)
+*   [Homepage](http://foosoft.net/projects/vim-argwrap/)
+*   [Vim Awesome](http://vimawesome.com/plugin/vim-argwrap/)
 *   [Vim.org](http://www.vim.org/scripts/script.php?script_id=5062)
 
 ## Installation
 
 1.  Clone or otherwise download the latest version of the *argwrap.vim* extension from its
     [GitHub](https://github.com/FooSoft/vim-argwrap) page (the script is also available for download through
-    [vim.org](http://www.vim.org/scripts/script.php?script_id=5062)). If you are using
+    [Vim.org](http://www.vim.org/scripts/script.php?script_id=5062)). If you are using
     [pathogen.vim](https://github.com/tpope/vim-pathogen) for plugin management (you should) you can clone the
     repository directly to your bundle directory:
 
