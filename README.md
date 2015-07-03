@@ -18,12 +18,16 @@ information.
     [pathogen.vim](https://github.com/tpope/vim-pathogen) for plugin management (you should) you can clone the
     repository directly to your bundle directory:
 
-    `git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap`
+    ```
+    git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap
+    ```
 
 2.  Create a keyboard binding for the `ArgWrap` command inside your `~/.vimrc` file. For example, to declare a normal
     mode mapping, add the following command:
 
-    `nnoremap <silent> <leader>a :ArgWrap<CR>`
+    ```
+    nnoremap <silent> <leader>a :ArgWrap<CR>
+    ```
 
 3.  You can customize the wrapping/unwrapping behavior of this extension by setting values for any of the following
     optional buffer and global variables in your `.vimrc` file:
