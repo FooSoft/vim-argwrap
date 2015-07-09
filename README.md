@@ -7,7 +7,7 @@ information.
 
 *   [GitHub](https://github.com/FooSoft/vim-argwrap/)
 *   [Homepage](http://foosoft.net/projects/vim-argwrap/)
-*   [Vim Awesome](http://vimawesome.com/plugin/vim-argwrap/)
+*   [Vim Awesome](http://vimawesome.com/plugin/vim-argwrap)
 *   [Vim.org](http://www.vim.org/scripts/script.php?script_id=5062)
 
 ## Installation
@@ -19,7 +19,7 @@ information.
     repository directly to your bundle directory:
 
     ```
-    git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap
+    $ git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap
     ```
 
 2.  Create a keyboard binding for the `ArgWrap` command inside your `~/.vimrc` file. For example, to declare a normal
