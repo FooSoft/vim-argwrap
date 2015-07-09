@@ -44,8 +44,9 @@ function! argwrap#compareRanges(range1, range2)
 endfunction
 
 function! argwrap#findRange(braces)
-    let [l:lineStart, l:colStart] = searchpairpos(a:braces[0], '', a:braces[1], 'Wnb')
-    let [l:lineEnd, l:colEnd] = searchpairpos(a:braces[0], '', a:braces[1], 'Wcn')
+    let l:filter = 'synIDattr(synID(line("."), col("."), 0), "name") =~? "string"'
+    let [l:lineStart, l:colStart] = searchpairpos(a:braces[0], '', a:braces[1], 'Wnb', filter)
+    let [l:lineEnd, l:colEnd] = searchpairpos(a:braces[0], '', a:braces[1], 'Wcn', filter)
     return {'lineStart': l:lineStart, 'colStart': l:colStart, 'lineEnd': l:lineEnd, 'colEnd': l:colEnd}
 endfunction
 
