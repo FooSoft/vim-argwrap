@@ -66,7 +66,8 @@ function! argwrap#findClosestRange()
     endif
 endfunction
 
-function! argwrap#extractContainerArgText(range)
+function! argwrap#extractContainerArgInfo(range)
+    let l:skip = []
     let l:text = ''
 
     for l:lineIndex in range(a:range.lineStart, a:range.lineEnd)
@@ -85,10 +86,17 @@ function! argwrap#extractContainerArgText(range)
         if l:extractStart < l:extractEnd
             let l:extract = l:lineText[l:extractStart : l:extractEnd - 1]
             let l:text .= substitute(l:extract, '^\s*\(.\{-}\)\s*$', '\1 ', '')
+
+            for l:colIndex in range(l:extractStart, l:extractEnd)
+                let l:synId = synID(l:lineIndex, l:colIndex, 0)
+                let l:name = synIDattr(l:synId, 'name')
+                let l:type = l:name =~? 'string' ? 1 : 0
+                call add(l:skip, l:type)
+            endfor
         endif
     endfor
 
-    return l:text
+    return {'text': l:text, 'skip': l:skip}
 endfunction
 
 function! argwrap#updateScope(stack, char)
@@ -206,8 +214,8 @@ function! argwrap#toggle()
         return
     endif
 
-    let l:argText = argwrap#extractContainerArgText(l:range)
-    let l:arguments = argwrap#extractContainerArgs(l:argText)
+    let l:argInfo = argwrap#extractContainerArgInfo(l:range)
+    let l:arguments = argwrap#extractContainerArgs(l:argInfo)
     if len(l:arguments) == 0
         return
     endif
