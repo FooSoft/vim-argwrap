@@ -156,14 +156,12 @@ Foo(
     spam,
     {bar: baz, qux: [1, 3, 3, 7]}
 )
-
 ```
 
 You can continue argument expansion to:
 
 
 ```
-
 Foo(
     [
         wibble,
@@ -181,7 +179,6 @@ Foo(
         ]
     }
 )
-
 ```
 
 The argument wrapping and unwrapping operations demonstrated above are easily reversible and correctly preserve the
