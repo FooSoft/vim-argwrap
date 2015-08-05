@@ -84,7 +84,9 @@ function! argwrap#extractContainerArgText(range)
 
         if l:extractStart < l:extractEnd
             let l:extract = l:lineText[l:extractStart : l:extractEnd - 1]
-            let l:text .= substitute(l:extract, '^\s*\(.\{-}\)\s*$', '\1 ', '')
+            let l:extract = substitute(l:extract, '^\s*\(.\{-}\)\s*$', '\1', '')
+            let l:extract = substitute(l:extract, ',$', ', ', '')
+            let l:text .= l:extract
         endif
     endfor
 
@@ -121,14 +123,20 @@ function! argwrap#extractContainerArgs(text)
             call argwrap#updateScope(l:stack, l:char)
 
             if len(l:stack) == 0 && l:char == ','
-                call add(l:arguments, argwrap#trimArgument(l:argument))
+                let l:argument = argwrap#trimArgument(l:argument)
+                if len(l:argument) > 0
+                    call add(l:arguments, l:argument)
+                endif
                 let l:argument = ''
             else
                 let l:argument .= l:char
             endif
         endfor
 
-        call add(l:arguments, argwrap#trimArgument(l:argument))
+        let l:argument = argwrap#trimArgument(l:argument)
+        if len(l:argument) > 0
+            call add(l:arguments, l:argument)
+        endif
     endif
 
     return l:arguments
