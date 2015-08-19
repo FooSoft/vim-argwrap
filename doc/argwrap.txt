@@ -1,7 +1,7 @@
 argwrap.txt                                           Wrap and unwrap function arguments, lists, and dictionaries in Vim
 
 ========================================================================================================================
-CONTENTS
+CONTENTS                                                                                                *argwrap-contents*
 
 1. ArgWrap...............................................................................................|argwrap-argwrap|
     1.1. Installation...............................................................................|argwrap-installation|
