@@ -1,6 +1,14 @@
 argwrap.txt                                           Wrap and unwrap function arguments, lists, and dictionaries in Vim
 
 ========================================================================================================================
+CONTENTS
+
+1. ArgWrap...............................................................................................|argwrap-argwrap|
+    1.1. Installation...............................................................................|argwrap-installation|
+    1.2. Usage.............................................................................................|argwrap-usage|
+    1.3. Configuration.............................................................................|argwrap-configuration|
+
+========================================================================================================================
 ARGWRAP                                                                                                  *argwrap-argwrap*
 
 ArgWrap is an industrial strength argument wrapping and unwrapping extension for the Vim (http://www.vim.org/) text
@@ -8,11 +16,6 @@ editor. It can be used for collapsing and expanding everything from function cal
 All operations are easily reversible and correctly preserve the indentation of the surrounding code.
 
 
-
-ArgWrap                                                                                                  |argwrap-argwrap|
-    Installation                                                                                    |argwrap-installation|
-    Usage                                                                                                  |argwrap-usage|
-    Configuration                                                                                  |argwrap-configuration|
 
 ------------------------------------------------------------------------------------------------------------------------
 INSTALLATION                                                                                        *argwrap-installation*
