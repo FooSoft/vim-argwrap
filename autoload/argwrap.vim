@@ -153,7 +153,7 @@ function! argwrap#extractContainer(range)
     return {'indent': l:indent, 'prefix': l:prefix, 'suffix': l:suffix}
 endfunction
 
-function! argwrap#wrapContainer(range, container, arguments, wrapBrace)
+function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComma)
     let l:argCount = len(a:arguments)
     let l:line = a:range.lineStart
 
@@ -161,7 +161,7 @@ function! argwrap#wrapContainer(range, container, arguments, wrapBrace)
 
     for l:index in range(l:argCount)
         let l:text = a:container.indent . a:arguments[l:index]
-        if l:index < l:argCount - 1
+        if l:index < l:argCount - 1 || a:tailComma
             let l:text .= ','
         elseif !a:wrapBrace
             let l:text .= a:container.suffix
@@ -190,24 +190,25 @@ function! argwrap#unwrapContainer(range, container, arguments, padded)
     exec printf('silent %d,%dd_', a:range.lineStart + 1, a:range.lineEnd)
 endfunction
 
+function! argwrap#getSetting(name, default)
+    let l:bName = 'b:argwrap_'.a:name
+    let l:gName = 'g:argwrap_'.a:name
+
+    if exists(l:bName)
+        return {l:bName}
+    elseif exists(l:gName)
+        return {l:gName}
+    else
+        return a:default
+    endif
+endfunction
+
 function! argwrap#toggle()
-    if exists('b:argwrap_wrap_closing_brace')
-        let l:wrapBrace = b:argwrap_wrap_closing_brace
-    elseif exists('g:argwrap_wrap_closing_brace')
-        let l:wrapBrace = g:argwrap_wrap_closing_brace
-    else
-        let l:wrapBrace = 1
-    endif
-
-    if exists('b:argwrap_padded_braces')
-        let l:padded = b:argwrap_padded_braces
-    elseif exists('g:argwrap_padded_braces')
-        let l:padded = g:argwrap_padded_braces
-    else
-        let l:padded = ''
-    endif
-
     let l:cursor = getpos('.')
+
+    let l:tailComma = argwrap#getSetting('tail_comma', 0)
+    let l:wrapBrace = argwrap#getSetting('wrap_closing_brace', 1)
+    let l:padded = argwrap#getSetting('padded_braces', '')
 
     let l:range = argwrap#findClosestRange()
     if !argwrap#validateRange(l:range)
@@ -222,7 +223,7 @@ function! argwrap#toggle()
 
     let l:container = argwrap#extractContainer(l:range)
     if l:range.lineStart == l:range.lineEnd
-        call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace)
+        call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace, l:tailComma)
     else
         call argwrap#unwrapContainer(l:range, l:container, l:arguments, l:padded)
     endif
