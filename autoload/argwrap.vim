@@ -209,10 +209,10 @@ endfunction
 function! argwrap#toggle()
     let l:cursor = getpos('.')
 
+    let l:linePrefix = argwrap#getSetting('line_prefix', '')
+    let l:padded = argwrap#getSetting('padded_braces', '')
     let l:tailComma = argwrap#getSetting('tail_comma', 0)
     let l:wrapBrace = argwrap#getSetting('wrap_closing_brace', 1)
-    let l:padded = argwrap#getSetting('padded_braces', '')
-    let l:linePrefix = argwrap#getSetting('line_prefix', '')
 
     let l:range = argwrap#findClosestRange()
     if !argwrap#validateRange(l:range)
