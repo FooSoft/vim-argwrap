@@ -163,12 +163,15 @@ function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComm
     call setline(l:line, a:container.indent . a:container.prefix)
 
     for l:index in range(l:argCount)
-        let l:text =  a:container.indent . a:linePrefix . a:arguments[l:index]
-        if l:index < l:argCount - 1 || a:tailComma
+        let l:text = a:container.indent . a:linePrefix . a:arguments[l:index]
+        let l:last = l:index == l:argCount - 1
+
+        if  !l:last || a:tailComma
             let l:text .= ','
-        elseif !a:wrapBrace
+        end
+        if l:last && !a:wrapBrace
             let l:text .= a:container.suffix
-        endif
+        end
 
         call append(l:line, l:text)
         let l:line += 1
