@@ -156,19 +156,30 @@ function! argwrap#extractContainer(range)
     return {'indent': l:indent, 'prefix': l:prefix, 'suffix': l:suffix}
 endfunction
 
-function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComma, linePrefix)
+function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComma, linePrefix, commaFirst)
     let l:argCount = len(a:arguments)
     let l:line = a:range.lineStart
 
     call setline(l:line, a:container.indent . a:container.prefix)
 
     for l:index in range(l:argCount)
-        let l:text = a:container.indent . a:linePrefix . a:arguments[l:index]
         let l:last = l:index == l:argCount - 1
+        let l:first = l:index == 0
+        let l:text = ''
 
-        if  !l:last || a:tailComma
-            let l:text .= ','
+        if a:commaFirst
+            let l:text .= a:container.indent . a:linePrefix
+            if !l:first
+                let l:text .= ', '
+            end
+            let l:text .= a:arguments[l:index]
+        else
+            let l:text .= a:container.indent . a:linePrefix . a:arguments[l:index]
+            if  !l:last || a:tailComma
+                let l:text .= ','
+            end
         end
+
         if l:last && !a:wrapBrace
             let l:text .= a:container.suffix
         end
@@ -216,6 +227,7 @@ function! argwrap#toggle()
     let l:padded = argwrap#getSetting('padded_braces', '')
     let l:tailComma = argwrap#getSetting('tail_comma', 0)
     let l:wrapBrace = argwrap#getSetting('wrap_closing_brace', 1)
+    let l:commaFirst = argwrap#getSetting('comma_first', 0)
 
     let l:range = argwrap#findClosestRange()
     if !argwrap#validateRange(l:range)
@@ -230,7 +242,7 @@ function! argwrap#toggle()
 
     let l:container = argwrap#extractContainer(l:range)
     if l:range.lineStart == l:range.lineEnd
-        call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace, l:tailComma, l:linePrefix)
+        call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace, l:tailComma, l:linePrefix, l:commaFirst)
     else
         call argwrap#unwrapContainer(l:range, l:container, l:arguments, l:padded)
     endif
