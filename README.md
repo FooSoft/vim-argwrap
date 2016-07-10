@@ -1,17 +1,15 @@
-# Vim-ArgWrap #
+# ArgWrap #
 
-ArgWrap is an industrial strength argument wrapping and unwrapping extension for the [Vim](http://www.vim.org/) text
-editor. It can be used for collapsing and expanding everything from function calls to array and dictionary definitions.
-All operations are easily reversible and correctly preserve the indentation of the surrounding code.
+ArgWrap is an industrial strength argument wrapping and unwrapping extension for the Vim text editor. It can be used for
+collapsing and expanding everything from function calls to array and dictionary definitions.  All operations are easily
+reversible and correctly preserve the indentation of the surrounding code.
 
 ![](https://foosoft.net/projects/vim-argwrap/img/demo.gif)
 
 ## Installation ##
 
-1.  Clone or otherwise download ArgWrap extension from the [GitHub](https://github.com/FooSoft/vim-argwrap) page.
-
-    If you are using [pathogen.vim](https://github.com/tpope/vim-pathogen) for plugin management you can clone the
-    repository directly to your bundle directory:
+1.  Clone or otherwise download ArgWrap extension. Users of [pathogen.vim](https://github.com/tpope/vim-pathogen) can
+    clone the repository directly to their bundle directory:
 
     ```
     $ git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap
