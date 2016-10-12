@@ -159,6 +159,7 @@ endfunction
 function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComma, tailCommaBraces, linePrefix, commaFirst)
     let l:argCount = len(a:arguments)
     let l:line = a:range.lineStart
+    let l:prefix = a:container.prefix[len(a:container.prefix) - 1]
 
     call setline(l:line, a:container.indent . a:container.prefix)
 
@@ -175,7 +176,7 @@ function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComm
             let l:text .= a:arguments[l:index]
         else
             let l:text .= a:container.indent . a:linePrefix . a:arguments[l:index]
-            if  !l:last || a:tailComma || a:tailCommaBraces =~ a:container.prefix
+            if  !l:last || a:tailComma || a:tailCommaBraces =~ l:prefix
                 let l:text .= ','
             end
         end
