@@ -73,7 +73,7 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
 <
     Padding can be specified for multiple brace types ()
 *   argwrap_tail_comma
-    Specifies if the closing brace should be preceded with a comma when wrapping lines.
+    Specifies if any closing brace should be preceded with a comma when wrapping lines.
     Tail comma disabled (default)
 >
         Foo(
@@ -89,6 +89,24 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
             wobble,
             wubble,
         )
+<
+*   argwrap_tail_comma_braces
+    Specifies which closing brace should be preceded with a comma when wrapping lines.
+    Tail comma disabled (default)
+>
+        Foo(
+            wibble,
+            wobble,
+            wubble
+        )
+<
+    Tail comma enabled for square brackets ()
+>
+        r = [
+            3,
+            5,
+            8,
+        ]
 <
 *   argwrap_wrap_closing_brace
     Specifies if the closing brace should be wrapped to a new line.

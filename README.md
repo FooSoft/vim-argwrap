@@ -77,7 +77,7 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
 
 *   **argwrap_tail_comma**
 
-    Specifies if the closing brace should be preceded with a comma when wrapping lines.
+    Specifies if any closing brace should be preceded with a comma when wrapping lines.
 
     *Tail comma disabled (default)*
 
@@ -97,6 +97,30 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
         wobble,
         wubble,
     )
+    ```
+
+*   **argwrap_tail_comma_braces**
+
+    Specifies which closing brace should be preceded with a comma when wrapping lines.
+
+    *Tail comma disabled (default)*
+
+    ```
+    Foo(
+        wibble,
+        wobble,
+        wubble
+    )
+    ```
+
+    *Tail comma enabled for square brackets only (`let g:argwrap_tail_comma_braces = '['`)*
+
+    ```
+    r = [
+        2,
+        3,
+        5,
+    ]
     ```
 
 *   **argwrap_wrap_closing_brace**
