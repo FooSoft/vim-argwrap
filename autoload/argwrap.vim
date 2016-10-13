@@ -156,9 +156,10 @@ function! argwrap#extractContainer(range)
     return {'indent': l:indent, 'prefix': l:prefix, 'suffix': l:suffix}
 endfunction
 
-function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComma, linePrefix, commaFirst)
+function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComma, tailCommaBraces, linePrefix, commaFirst)
     let l:argCount = len(a:arguments)
     let l:line = a:range.lineStart
+    let l:prefix = a:container.prefix[len(a:container.prefix) - 1]
 
     call setline(l:line, a:container.indent . a:container.prefix)
 
@@ -175,7 +176,7 @@ function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComm
             let l:text .= a:arguments[l:index]
         else
             let l:text .= a:container.indent . a:linePrefix . a:arguments[l:index]
-            if  !l:last || a:tailComma
+            if  !l:last || a:tailComma || a:tailCommaBraces =~ l:prefix
                 let l:text .= ','
             end
         end
@@ -226,6 +227,7 @@ function! argwrap#toggle()
     let l:linePrefix = argwrap#getSetting('line_prefix', '')
     let l:padded = argwrap#getSetting('padded_braces', '')
     let l:tailComma = argwrap#getSetting('tail_comma', 0)
+    let l:tailCommaBraces = argwrap#getSetting('tail_comma_braces', '')
     let l:wrapBrace = argwrap#getSetting('wrap_closing_brace', 1)
     let l:commaFirst = argwrap#getSetting('comma_first', 0)
 
@@ -242,7 +244,7 @@ function! argwrap#toggle()
 
     let l:container = argwrap#extractContainer(l:range)
     if l:range.lineStart == l:range.lineEnd
-        call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace, l:tailComma, l:linePrefix, l:commaFirst)
+        call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace, l:tailComma, l:tailCommaBraces, l:linePrefix, l:commaFirst)
     else
         call argwrap#unwrapContainer(l:range, l:container, l:arguments, l:padded)
     endif
