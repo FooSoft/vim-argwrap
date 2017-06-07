@@ -106,11 +106,11 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
     *Tail comma disabled (default)*
 
     ```
-    Foo(
-        wibble,
-        wobble,
-        wubble
-    )
+    r = [
+        2,
+        3,
+        5
+    ]
     ```
 
     *Tail comma enabled for square brackets only (`let g:argwrap_tail_comma_braces = '['`)*
