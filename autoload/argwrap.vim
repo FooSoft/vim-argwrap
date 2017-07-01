@@ -187,7 +187,7 @@ function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComm
 
         call append(l:line, l:text)
         let l:line += 1
-        exec printf('%s>', l:line)
+        silent! exec printf('%s>', l:line)
     endfor
 
     if a:wrapBrace
