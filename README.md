@@ -31,7 +31,7 @@ global variables (prefixed with `g:`), making them ideal for configuring the beh
 file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` variable has two variants declared as
 `b:argwrap_tail_comma` and `g:argwrap_tail_comma`, for buffer and global scopes respectively.
 
-*   **argwrap_line_prefix**
+*   **argwrap\_line\_prefix**
 
     Specifies a line prefix to be added and removed when working with languages that require newlines to be escaped.
 
@@ -55,7 +55,7 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
     \)
     ```
 
-*   **argwrap_padded_braces**
+*   **argwrap\_padded\_braces**
 
     Specifies which brace types should be padded on the inside with spaces.
 
@@ -75,7 +75,7 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
 
     *Padding can be specified for multiple brace types (`let g:argwrap_padded_braces = '[{'`)*
 
-*   **argwrap_tail_comma**
+*   **argwrap\_tail\_comma**
 
     Specifies if any closing brace should be preceded with a comma when wrapping lines.
 
@@ -99,7 +99,7 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
     )
     ```
 
-*   **argwrap_tail_comma_braces**
+*   **argwrap\_tail\_comma\_braces**
 
     Specifies which closing brace should be preceded with a comma when wrapping lines.
 
@@ -123,7 +123,7 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
     ]
     ```
 
-*   **argwrap_wrap_closing_brace**
+*   **argwrap\_wrap\_closing\_brace**
 
     Specifies if the closing brace should be wrapped to a new line.
 
