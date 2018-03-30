@@ -156,7 +156,7 @@ function! argwrap#extractContainer(range)
     return {'indent': l:indent, 'prefix': l:prefix, 'suffix': l:suffix}
 endfunction
 
-function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComma, tailCommaBraces, linePrefix, commaFirst)
+function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComma, tailCommaBraces, tailIndentBraces, linePrefix, commaFirst, commaFirstIndent)
     let l:argCount = len(a:arguments)
     let l:line = a:range.lineStart
     let l:prefix = a:container.prefix[len(a:container.prefix) - 1]
@@ -188,10 +188,20 @@ function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComm
         call append(l:line, l:text)
         let l:line += 1
         silent! exec printf('%s>', l:line)
+
+        if l:first && a:commaFirstIndent
+            let width = &l:shiftwidth
+            let &l:shiftwidth = 2
+            silent! exec printf('%s>', l:line)
+            let &l:shiftwidth = l:width
+        end
     endfor
 
     if a:wrapBrace
         call append(l:line, a:container.indent . a:linePrefix . a:container.suffix)
+        if a:tailIndentBraces =~ l:prefix
+            silent! exec printf('%s>', l:line + 1)
+        end
     endif
 endfunction
 
@@ -228,8 +238,10 @@ function! argwrap#toggle()
     let l:padded = argwrap#getSetting('padded_braces', '')
     let l:tailComma = argwrap#getSetting('tail_comma', 0)
     let l:tailCommaBraces = argwrap#getSetting('tail_comma_braces', '')
+    let l:tailIndentBraces = argwrap#getSetting('tail_indent_braces', '')
     let l:wrapBrace = argwrap#getSetting('wrap_closing_brace', 1)
     let l:commaFirst = argwrap#getSetting('comma_first', 0)
+    let l:commaFirstIndent = argwrap#getSetting('comma_first_indent', 0)
 
     let l:range = argwrap#findClosestRange()
     if !argwrap#validateRange(l:range)
@@ -244,7 +256,7 @@ function! argwrap#toggle()
 
     let l:container = argwrap#extractContainer(l:range)
     if l:range.lineStart == l:range.lineEnd
-        call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace, l:tailComma, l:tailCommaBraces, l:linePrefix, l:commaFirst)
+        call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace, l:tailComma, l:tailCommaBraces, l:tailIndentBraces, l:linePrefix, l:commaFirst, l:commaFirstIndent)
     else
         call argwrap#unwrapContainer(l:range, l:container, l:arguments, l:padded)
     endif
