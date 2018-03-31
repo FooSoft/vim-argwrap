@@ -116,11 +116,35 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
     *Tail comma enabled for square brackets only (`let g:argwrap_tail_comma_braces = '['`)*
 
     ```
-    r = [
+    [
+        1,
         2,
         3,
-        5,
     ]
+    ```
+
+*   **argwrap\_tail\_indent\_braces**
+
+    Specifies if the closing brace should be indented to argument depth.
+
+    *Tail indent disabled*
+
+    ```
+    Foo(
+        wibble,
+        wobble,
+        wubble
+    )
+    ```
+
+    *Tail indent enabled for parenthesis (`let g:argwrap_tail_indent_braces = '('`)*
+
+    ```
+    Foo(
+        wibble,
+        wobble,
+        wubble
+        )
     ```
 
 *   **argwrap\_wrap\_closing\_brace**
@@ -144,6 +168,54 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
         wibble,
         wobble,
         wubble)
+    ```
+
+*   **argwrap\_comma\_first**
+
+    Specifies if the argument comma delimiter should be placed before arguments.
+
+    *Comma first disabled (default)*
+
+    ```
+    Foo(
+        wibble,
+        wobble,
+        wubble
+    )
+    ```
+
+    *Comma first enabled (`let g:argwrap_comma_first = 1`)*
+
+    ```
+    Foo(
+        wibble
+        , wobble
+        , wubble
+    )
+    ```
+
+*   **argwrap\_comma\_first\_indent**
+
+    Specifies if the first argument should be indented when used in conjunction with `argwrap_comma_first`.
+
+    *Comma first indent disabled (default)*
+
+    ```
+    Foo(
+        wibble
+        , wobble
+        , wubble
+    )
+    ```
+
+    *Comma first indent enabled (`let g:argwrap_comma_first_indent = 1`)*
+
+    ```
+    Foo(
+          wibble
+        , wobble
+        , wubble
+    )
     ```
 
 ## Usage ##
