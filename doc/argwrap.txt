@@ -100,13 +100,31 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
             wubble
         )
 <
-    Tail comma enabled for square brackets ()
+    Tail comma enabled for square brackets only ()
 >
-        r = [
+        [
+            1,
+            2,
             3,
-            5,
-            8,
         ]
+<
+*   argwrap_tail_indent_braces
+    Specifies if the closing brace should be indented to argument depth.
+    Tail indent disabled
+>
+        Foo(
+            wibble,
+            wobble,
+            wubble
+        )
+<
+    Tail indent enabled for parenthesis ()
+>
+        Foo(
+            wibble,
+            wobble,
+            wubble
+            )
 <
 *   argwrap_wrap_closing_brace
     Specifies if the closing brace should be wrapped to a new line.
@@ -125,6 +143,42 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
             wobble,
             wubble)
 <
+*   argwrap_comma_first
+    Specifies if the argument comma delimiter should be placed before arguments.
+    Comma first disabled (default)
+>
+        Foo(
+            wibble,
+            wobble,
+            wubble
+        )
+<
+    Comma first enabled ()
+>
+        Foo(
+            wibble
+            , wobble
+            , wubble
+        )
+<
+*   argwrap_comma_first_indent
+    Specifies if the first argument should be indented when used in conjunction with `argwrap_comma_first`.
+    Comma first indent disabled (default)
+>
+        Foo(
+            wibble
+            , wobble
+            , wubble
+        )
+<
+    Comma first indent enabled ()
+>
+        Foo(
+              wibble
+            , wobble
+            , wubble
+        )
+<
 
 ------------------------------------------------------------------------------------------------------------------------
 USAGE                                                                                                      *argwrap-usage*
@@ -136,4 +190,20 @@ USAGE                                                                           
 ------------------------------------------------------------------------------------------------------------------------
 LICENSE                                                                                                  *argwrap-license*
 
-MIT
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
