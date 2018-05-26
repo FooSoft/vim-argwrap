@@ -257,6 +257,7 @@ function! argwrap#toggle()
     let l:container = argwrap#extractContainer(l:range)
     if l:range.lineStart == l:range.lineEnd
         call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace, l:tailComma, l:tailCommaBraces, l:tailIndentBraces, l:linePrefix, l:commaFirst, l:commaFirstIndent)
+        let l:cursor[1] = l:range.lineStart + 1
     else
         call argwrap#unwrapContainer(l:range, l:container, l:arguments, l:padded)
         let l:cursor[1] = l:range.lineStart
