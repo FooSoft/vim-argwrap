@@ -259,6 +259,7 @@ function! argwrap#toggle()
         call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace, l:tailComma, l:tailCommaBraces, l:tailIndentBraces, l:linePrefix, l:commaFirst, l:commaFirstIndent)
     else
         call argwrap#unwrapContainer(l:range, l:container, l:arguments, l:padded)
+        let l:cursor[1] = l:range.lineStart
     endif
 
     call setpos('.', l:cursor)
