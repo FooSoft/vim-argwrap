@@ -68,6 +68,7 @@ endfunction
 
 function! argwrap#extractContainerArgText(range, linePrefix)
     let l:text = ''
+    let l:trimPattern = printf('\m^\s*\(.\{-}\%%(%s\)\?\)\s*$', escape(a:linePrefix, '\$.*^['))
 
     for l:lineIndex in range(a:range.lineStart, a:range.lineEnd)
         let l:lineText = getline(l:lineIndex)
@@ -84,7 +85,7 @@ function! argwrap#extractContainerArgText(range, linePrefix)
 
         if l:extractStart < l:extractEnd
             let l:extract = l:lineText[l:extractStart : l:extractEnd - 1]
-            let l:extract = substitute(l:extract, '^\s*\(.\{-}\)\s*$', '\1', '')
+            let l:extract = substitute(l:extract, l:trimPattern, '\1', '')
             if stridx(l:extract, a:linePrefix) == 0
                 let l:extract = l:extract[len(a:linePrefix):]
             endif
