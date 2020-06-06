@@ -29,7 +29,7 @@ INSTALLATION                                                                    
 2.  Create a keyboard binding for the `ArgWrap` command inside your `~/.vimrc` file.
     For example, to declare a normal mode mapping, add the following command:
 >
-        nnoremap <silent> <leader>a :ArgWrap<CR>
+        nmap <silent> <leader>a <Plug>(ArgWrapToggle)
 <
 
 ------------------------------------------------------------------------------------------------------------------------

@@ -19,3 +19,6 @@
 
 
 command! ArgWrap call argwrap#toggle()
+
+nnoremap <silent> <Plug>(ArgWrapToggle) :call argwrap#toggle() <BAR>
+  \ silent! call repeat#set("\<Plug>(ArgWrapToggle)")<CR>
