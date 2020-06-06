@@ -179,6 +179,23 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
             , wubble
         )
 <
+*   argwrap_php_smart_brace
+    Specifies if the opening brace of PHP methods should be wrap/unwrap as well.
+    PHP smart brace disabled (default)
+>
+        public function foo(
+            int $x,
+            int $y
+        )
+        {
+<
+    PHP smart brace enabled ()
+>
+        public function foo(
+            int $x,
+            int $y
+        ) {
+<
 
 ------------------------------------------------------------------------------------------------------------------------
 USAGE                                                                                                      *argwrap-usage*

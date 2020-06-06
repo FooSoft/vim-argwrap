@@ -260,18 +260,12 @@ function! argwrap#toggle()
         call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace, l:tailComma, l:tailCommaBraces, l:tailIndentBraces, l:linePrefix, l:commaFirst, l:commaFirstIndent)
         let l:cursor[1] = l:range.lineStart + 1
 
-        let l:filetypeHook = printf('argwrap#hooks#%s#post_wrap', &filetype)
-        if exists('*'.l:filetypeHook)
-            call call(l:filetypeHook, [l:range, l:container, l:arguments])
-        endif
+        silent! call argwrap#hooks#{&filetype}#post_wrap(l:range, l:container, l:arguments)
     else
         call argwrap#unwrapContainer(l:range, l:container, l:arguments, l:padded)
         let l:cursor[1] = l:range.lineStart
 
-        let l:filetypeHook = printf('argwrap#hooks#%s#post_unwrap', &filetype)
-        if exists('*'.l:filetypeHook)
-            call call(l:filetypeHook, [l:range, l:container, l:arguments])
-        endif
+        silent! call argwrap#hooks#{&filetype}#post_unwrap(l:range, l:container, l:arguments)
     endif
 
     call setpos('.', l:cursor)
