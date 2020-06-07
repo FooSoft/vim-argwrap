@@ -35,14 +35,11 @@ function! s:fixMethodOpeningBraceAfterUnwrap(range, container, arguments) abort 
     return
   endif
 
-  if a:container.suffix !~ '\v^\)\s*\{'
+  if a:container.suffix !~ '\v^\).*\{\s*$'
     return
   endif
 
-  " +1 to get the position after the closing parenthesis
-  let l:col = stridx(getline(a:range.lineStart), a:container.suffix) + 1
-
-  execute printf("undojoin | normal! %dG0%dlct{\<CR>", a:range.lineStart, l:col)
+  execute printf("undojoin | normal! %dG$F{i\<CR>", a:range.lineStart)
 endfunction " }}}
 
 function! argwrap#hooks#filetype#php#200_smart_brace#pre_wrap(range, container, arguments) abort " {{{
