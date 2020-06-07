@@ -10,18 +10,6 @@ function! s:dealWithMethodArguments(container) abort " {{{
   return 1
 endfunction " }}}
 
-function! argwrap#hooks#php#post_wrap(range, container, arguments) abort " {{{
-  if argwrap#getSetting('php_smart_brace', 0)
-    call s:fixMethodOpeningBraceAfterWrap(a:range, a:container, a:arguments)
-  endif
-endfunction  " }}}
-
-function! argwrap#hooks#php#post_unwrap(range, container, arguments) abort " {{{
-  if argwrap#getSetting('php_smart_brace', 0)
-    call s:fixMethodOpeningBraceAfterUnwrap(a:range, a:container, a:arguments)
-  endif
-endfunction  " }}}
-
 function! s:fixMethodOpeningBraceAfterWrap(range, container, arguments) abort " {{{
   if !s:dealWithMethodArguments(a:container)
     return
@@ -56,5 +44,29 @@ function! s:fixMethodOpeningBraceAfterUnwrap(range, container, arguments) abort 
 
   execute printf("undojoin | normal! %dG0%dlct{\<CR>", a:range.lineStart, l:col)
 endfunction " }}}
+
+function! argwrap#hooks#filetype#php#200_smart_brace#pre_wrap(range, container, arguments) abort " {{{
+  " Do nothing but prevent the file to be loaded more than once
+  " When calling an autoload function that is not define the script that
+  " should contain it is sourced every time the function is called
+endfunction  " }}}
+
+function! argwrap#hooks#filetype#php#200_smart_brace#pre_unwrap(range, container, arguments) abort " {{{
+  " Do nothing but prevent the file to be loaded more than once
+  " When calling an autoload function that is not define the script that
+  " should contain it is sourced every time the function is called
+endfunction  " }}}
+
+function! argwrap#hooks#filetype#php#200_smart_brace#post_wrap(range, container, arguments) abort " {{{
+  if argwrap#getSetting('php_smart_brace', 0)
+    call s:fixMethodOpeningBraceAfterWrap(a:range, a:container, a:arguments)
+  endif
+endfunction  " }}}
+
+function! argwrap#hooks#filetype#php#200_smart_brace#post_unwrap(range, container, arguments) abort " {{{
+  if argwrap#getSetting('php_smart_brace', 0)
+    call s:fixMethodOpeningBraceAfterUnwrap(a:range, a:container, a:arguments)
+  endif
+endfunction  " }}}
 
 " vim: ts=2 sw=2 et fdm=marker
