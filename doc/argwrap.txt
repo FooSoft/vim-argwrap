@@ -227,6 +227,18 @@ Global hooks will be executed before filetype ones.
 Global and filetype hooks are sorted by the |globpath()| function. Meaning you
 can control the execution order of the hooks by prefixing them with a
 priority.
+Post hooks order is reversed in order to keep the execution order logical.
+
+For example if there two hooks named `000_cursor` and `200_anything` , the
+cursor hook being responsible to preserve the cursor position it must be
+executed first to ensure no modification of the cursor position has been done
+yet so it receive the lowest priority.
+The execution stack for a wrap operation would then be:
+    - `000_cursor#pre_wrap`
+    - `000_anything#pre_wrap`
+    - `wrap operation`
+    - `000_anything#post_wrap`
+    - `000_cursor#post_wrap`
 
 
 An important things to know when writing a new hook is that calling an
