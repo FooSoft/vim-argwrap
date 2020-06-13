@@ -37,7 +37,15 @@ function! s:load() abort " {{{
 endfunction " }}}
 
 function! argwrap#hooks#execute(name, ...) abort " {{{
-  for hook in s:load()
+  " Reverse the order of the hooks for post hooks so that a pre hook with a
+  " low priority is executed before and a post hook is executed after
+  " For instance for a hook responsible to preserve the cursor position it
+  " must be the first to be executed to save the position of the cursor but
+  " the last to be executed to restore it after all other hooks have been
+  " executed
+  let l:hooks = a:name =~? '\v^post' ? reverse(copy(s:load())) : s:load()
+
+  for hook in l:hooks
     silent! call call(printf('%s#%s', hook, a:name), a:000)
   endfor
 endfunction " }}}
