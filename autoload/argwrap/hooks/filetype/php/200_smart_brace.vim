@@ -18,10 +18,7 @@ function! s:fixMethodOpeningBraceAfterWrap(range, container, arguments) abort " 
   let l:lineEnd = a:range.lineEnd + len(a:arguments)
 
   " Add 1 more line if the brace is also wrapped
-  " TODO define default values on the plugin level so that extension can
-  " request an option value without having to pass them all as argument or
-  " having to duplicate the default value
-  if 0 != argwrap#getSetting('wrap_closing_brace', 1)
+  if 0 != argwrap#getSetting('wrap_closing_brace')
     let l:lineEnd += 1
   endif
 
@@ -55,13 +52,13 @@ function! argwrap#hooks#filetype#php#200_smart_brace#pre_unwrap(range, container
 endfunction  " }}}
 
 function! argwrap#hooks#filetype#php#200_smart_brace#post_wrap(range, container, arguments) abort " {{{
-  if argwrap#getSetting('php_smart_brace', 0)
+  if argwrap#getSetting('php_smart_brace')
     call s:fixMethodOpeningBraceAfterWrap(a:range, a:container, a:arguments)
   endif
 endfunction  " }}}
 
 function! argwrap#hooks#filetype#php#200_smart_brace#post_unwrap(range, container, arguments) abort " {{{
-  if argwrap#getSetting('php_smart_brace', 0)
+  if argwrap#getSetting('php_smart_brace')
     call s:fixMethodOpeningBraceAfterUnwrap(a:range, a:container, a:arguments)
   endif
 endfunction  " }}}

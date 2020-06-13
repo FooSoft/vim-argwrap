@@ -219,30 +219,32 @@ function! argwrap#unwrapContainer(range, container, arguments, padded)
     exec printf('silent %d,%dd_', a:range.lineStart + 1, a:range.lineEnd)
 endfunction
 
-function! argwrap#getSetting(name, default)
+function! argwrap#getSetting(name)
     let l:bName = 'b:argwrap_' . a:name
     let l:gName = 'g:argwrap_' . a:name
 
-    if exists(l:bName)
-        return {l:bName}
-    elseif exists(l:gName)
-        return {l:gName}
-    else
-        return a:default
+    return exists(l:bName) ? {l:bName} : {l:gName}
+endfunction
+
+function! argwrap#initSetting(name, value) abort
+    let l:setting = 'g:argwrap_'.a:name
+
+    if !exists(l:setting)
+        let {l:setting} = a:value
     endif
 endfunction
 
 function! argwrap#toggle()
     let l:cursor = getpos('.')
 
-    let l:linePrefix = argwrap#getSetting('line_prefix', '')
-    let l:padded = argwrap#getSetting('padded_braces', '')
-    let l:tailComma = argwrap#getSetting('tail_comma', 0)
-    let l:tailCommaBraces = argwrap#getSetting('tail_comma_braces', '')
-    let l:tailIndentBraces = argwrap#getSetting('tail_indent_braces', '')
-    let l:wrapBrace = argwrap#getSetting('wrap_closing_brace', 1)
-    let l:commaFirst = argwrap#getSetting('comma_first', 0)
-    let l:commaFirstIndent = argwrap#getSetting('comma_first_indent', 0)
+    let l:linePrefix = argwrap#getSetting('line_prefix')
+    let l:padded = argwrap#getSetting('padded_braces')
+    let l:tailComma = argwrap#getSetting('tail_comma')
+    let l:tailCommaBraces = argwrap#getSetting('tail_comma_braces')
+    let l:tailIndentBraces = argwrap#getSetting('tail_indent_braces')
+    let l:wrapBrace = argwrap#getSetting('wrap_closing_brace')
+    let l:commaFirst = argwrap#getSetting('comma_first')
+    let l:commaFirstIndent = argwrap#getSetting('comma_first_indent')
 
     let l:range = argwrap#findClosestRange()
     if !argwrap#validateRange(l:range)
