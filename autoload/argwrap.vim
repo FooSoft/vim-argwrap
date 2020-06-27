@@ -235,8 +235,6 @@ function! argwrap#initSetting(name, value) abort
 endfunction
 
 function! argwrap#toggle()
-    let l:cursor = getpos('.')
-
     let l:linePrefix = argwrap#getSetting('line_prefix')
     let l:padded = argwrap#getSetting('padded_braces')
     let l:tailComma = argwrap#getSetting('tail_comma')
@@ -260,19 +258,11 @@ function! argwrap#toggle()
     let l:container = argwrap#extractContainer(l:range)
     if l:range.lineStart == l:range.lineEnd
         call argwrap#hooks#execute('pre_wrap', l:range, l:container, l:arguments)
-
         call argwrap#wrapContainer(l:range, l:container, l:arguments, l:wrapBrace, l:tailComma, l:tailCommaBraces, l:tailIndentBraces, l:linePrefix, l:commaFirst, l:commaFirstIndent)
-        let l:cursor[1] = l:range.lineStart + 1
-
         call argwrap#hooks#execute('post_wrap', l:range, l:container, l:arguments)
     else
         call argwrap#hooks#execute('pre_unwrap', l:range, l:container, l:arguments)
-
         call argwrap#unwrapContainer(l:range, l:container, l:arguments, l:padded)
-        let l:cursor[1] = l:range.lineStart
-
         call argwrap#hooks#execute('post_unwrap', l:range, l:container, l:arguments)
     endif
-
-    call setpos('.', l:cursor)
 endfunction
