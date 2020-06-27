@@ -6,8 +6,9 @@ CONTENTS                                                                        
 1. ArgWrap...............................................................................................|argwrap-argwrap|
     1.1. Installation...............................................................................|argwrap-installation|
     1.2. Configuration.............................................................................|argwrap-configuration|
-    1.3. Usage.............................................................................................|argwrap-usage|
-    1.4. License.........................................................................................|argwrap-license|
+    1.3. Hooks.............................................................................................|argwrap-hooks|
+    1.4. Usage.............................................................................................|argwrap-usage|
+    1.5. License.........................................................................................|argwrap-license|
 
 ========================================================================================================================
 ARGWRAP                                                                                                  *argwrap-argwrap*
@@ -179,7 +180,96 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
             , wubble
         )
 <
+*   argwrap_php_smart_brace
+    Specifies if the opening brace of PHP methods should be wrap/unwrap as well.
+    PHP smart brace disabled (default)
+>
+        public function foo(
+            int $x,
+            int $y
+        )
+        {
+<
+    PHP smart brace enabled ()
+>
+        public function foo(
+            int $x,
+            int $y
+        ) {
+<
 
+------------------------------------------------------------------------------------------------------------------------
+HOOKS                                                                                                      *argwrap-hooks*
+
+It is possible to hook before or after a  wrap/unwrap operation using
+autoloaded functions, the hooks are named:
+    - `pre_wrap`
+    - `pre_unwrap`
+    - `post_wrap`
+    - `post_unwrap`
+
+For example to do something after any wrap create a function: >
+    argwrap#hooks#my_hook#post_wrap(range, container, arguments)
+<
+It is also possible to create a hook for a specific filetype: >
+    argwrap#hooks#filetype#vim#my_hook#post_wrap(range, container, arguments)
+<
+
+Global hooks are loaded on the first time a wrap/unwrap operation is done.
+Filetype hooks however are only loaded for the current filetype.
+You can see the list of loaded hooks with: >
+    echo g:argwrap_global_hooks
+    echo g:argwrap_filetype_hooks
+    echo b:argwrap_hooks
+<
+The hooks are loaded from any directory specified in the |runtimepath|.
+Global hooks will be executed before filetype ones.
+Global and filetype hooks are sorted by the |globpath()| function. Meaning you
+can control the execution order of the hooks by prefixing them with a
+priority.
+Post hooks order is reversed in order to keep the execution order logical.
+
+For example if there two hooks named `000_cursor` and `200_anything` , the
+cursor hook being responsible to preserve the cursor position it must be
+executed first to ensure no modification of the cursor position has been done
+yet so it receive the lowest priority.
+The execution stack for a wrap operation would then be:
+    - `000_cursor#pre_wrap`
+    - `000_anything#pre_wrap`
+    - `wrap operation`
+    - `000_anything#post_wrap`
+    - `000_cursor#post_wrap`
+
+
+An important things to know when writing a new hook is that calling an
+|autoload| function which does not exist will source the file that should
+contain the function every time.
+So even if you do not need one of the hook, always define them all. This is a
+template you can use to get started: >
+    function! argwrap#hooks#my_hook#pre_wrap(range, container, arguments) abort " {{{
+      " Do nothing but prevent the file to be loaded more than once
+      " When calling an autoload function that is not define the script that
+      " should contain it is sourced every time the function is called
+    endfunction  " }}}
+
+    function! argwrap#hooks#my_hook#pre_unwrap(range, container, arguments) abort " {{{
+      " Do nothing but prevent the file to be loaded more than once
+      " When calling an autoload function that is not define the script that
+      " should contain it is sourced every time the function is called
+    endfunction  " }}}
+
+    function! argwrap#hooks#my_hook#post_wrap(range, container, arguments) abort " {{{
+      " Do nothing but prevent the file to be loaded more than once
+      " When calling an autoload function that is not define the script that
+      " should contain it is sourced every time the function is called
+    endfunction  " }}}
+
+    function! argwrap#hooks#my_hook#post_unwrap(range, container, arguments) abort " {{{
+      " Do nothing but prevent the file to be loaded more than once
+      " When calling an autoload function that is not define the script that
+      " should contain it is sourced every time the function is called
+    endfunction  " }}}
+<
 ------------------------------------------------------------------------------------------------------------------------
 USAGE                                                                                                      *argwrap-usage*
 
@@ -207,3 +297,4 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+ vim:tw=78:sw=4:ft=help:norl:
