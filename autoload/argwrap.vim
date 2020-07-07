@@ -187,8 +187,19 @@ function! argwrap#wrapContainer(range, container, arguments, wrapBrace, tailComm
         end
 
         call append(l:line, l:text)
-        let l:line += 1
-        silent! exec printf('%s>', l:line)
+
+        if !a:wrapBrace
+            if l:first
+                norm! Jx
+                let l:indentation = repeat(" ", getcurpos()[2] - 1)
+            else
+                let l:line += 1
+                call setline(l:line, substitute(getline(l:line), "^ *", l:indentation, ""))
+            endif
+        else
+            let l:line += 1
+            silent! exec printf('%s>', l:line)
+        endif
 
         if l:first && a:commaFirstIndent
             let width = &l:shiftwidth
