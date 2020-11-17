@@ -3,7 +3,7 @@ function! s:dealWithMethodArguments(container) abort " {{{
     return 0
   endif
 
-  if a:container.prefix !~? '\v^%(public|protected|private)\s+function\s+\S+\s*\($'
+  if a:container.prefix !~? '\v^%(public|protected|private)(\s+static)?\s+function\s+\S+\s*\($'
     return 0
   endif
 
