@@ -3,7 +3,7 @@ function! s:dealWithMethodArguments(container) abort " {{{
     return 0
   endif
 
-  if a:container.prefix !~? '\v^%(public|protected|private)\s+function\s+\S+\s*\($'
+  if a:container.prefix !~? '\v^%(public|protected|private)(\s+static)?\s+function\s+\S+\s*\($'
     return 0
   endif
 
@@ -36,18 +36,18 @@ function! s:fixMethodOpeningBraceAfterUnwrap(range, container, arguments) abort 
     return
   endif
 
-  execute printf("undojoin | normal! %dG$F{i\<CR>", a:range.lineStart)
+  execute printf("undojoin | normal! %dG$F{gelct{\<CR>", a:range.lineStart)
 endfunction " }}}
 
 function! argwrap#hooks#filetype#php#200_smart_brace#pre_wrap(range, container, arguments) abort " {{{
   " Do nothing but prevent the file to be loaded more than once
-  " When calling an autoload function that is not define the script that
+  " When calling an autoload function that is not define, the script that
   " should contain it is sourced every time the function is called
 endfunction  " }}}
 
 function! argwrap#hooks#filetype#php#200_smart_brace#pre_unwrap(range, container, arguments) abort " {{{
   " Do nothing but prevent the file to be loaded more than once
-  " When calling an autoload function that is not define the script that
+  " When calling an autoload function that is not define, the script that
   " should contain it is sourced every time the function is called
 endfunction  " }}}
 
