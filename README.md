@@ -1,10 +1,19 @@
+<!-- +++
+Area = "projects"
+GitHub = "vim-argwrap"
+Layout = "page"
+Tags = ["argwrap", "vim", "mit license", "vimscript"]
+Description = "Wrap and unwrap function arguments, lists, and dictionaries in Vim."
+Collection = "ProjectsActive"
++++ -->
+
 # Vim-ArgWrap
 
 ArgWrap is an industrial strength argument wrapping and unwrapping extension for the Vim text editor. It can be used for
 collapsing and expanding everything from function calls to array and dictionary definitions.  All operations are easily
 reversible and correctly preserve the indentation of the surrounding code.
 
-![](https://foosoft.net/projects/vim-argwrap/img/demo.gif)
+![](img/demo.gif)
 
 ## Installation
 
