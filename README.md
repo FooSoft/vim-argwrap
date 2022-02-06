@@ -15,21 +15,15 @@ easily reversible and correctly preserve the indentation of the surrounding code
 
 ![](img/demo.gif)
 
-## Installation
+## Installation and Usage
 
 1.  Clone or otherwise download ArgWrap extension. Users of [pathogen.vim](https://github.com/tpope/vim-pathogen) can
-    clone the repository directly to their bundle directory:
-
-    ```
-    $ git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap
-    ```
-
-2.  Create a keyboard binding for the `ArgWrap` command inside your `~/.vimrc` file. \
-    For example, to declare a normal mode mapping, add the following command:
-
-    ```
-    nnoremap <silent> <leader>a :ArgWrap<CR>
-    ```
+    clone the repository directly to their bundle directory: \
+    `git clone https://github.com/FooSoft/vim-argwrap ~/.vim/bundle/vim-argwrap`
+2.  Create a keyboard binding for the `ArgWrap` command. For example, to declare a normal mode mapping, add: \
+    `nnoremap <silent> <leader>a :ArgWrap<CR>`
+3.  Position the cursor inside of the parenthesis, brackets or curly braces you wish to wrap/unwrap.
+4.  Execute the keyboard binding you defined above to toggle the wrapping and unwrapping of arguments.
 
 ## Configuration
 
@@ -39,195 +33,189 @@ global variables (prefixed with `g:`), making them ideal for configuring the beh
 file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` variable has two variants declared as
 `b:argwrap_tail_comma` and `g:argwrap_tail_comma`, for buffer and global scopes respectively.
 
-*   `argwrap_line_prefix`
+### argwrap_line_prefix
 
-    Specifies a line prefix to be added and removed when working with languages that require newlines to be escaped.
+Specifies a line prefix to be added and removed when working with languages that require newlines to be escaped.
 
-    *Line prefix disabled (default)*
+Line prefix disabled (default):
 
-    ```
-    Foo(
-        wibble,
-        wobble,
-        wubble
+```
+Foo(
+    wibble,
+    wobble,
+    wubble
+)
+```
+
+Line prefix enabled for Vimscript (`let g:argwrap_line_prefix = '\'`):
+
+```
+Foo(
+    \wibble,
+    \wobble,
+    \wubble
+\)
+```
+
+### argwrap_padded_braces
+
+Specifies which brace types should be padded on the inside with spaces.
+
+Brace padding disabled (default):
+
+```
+[1, 2, 3]
+{1, 2, 3}
+```
+
+Brace padding enabled for square brackets only (`let g:argwrap_padded_braces = '['`):
+
+```
+[ 1, 2, 3 ]
+{1, 2, 3}
+```
+
+Padding can be specified for multiple brace types (`let g:argwrap_padded_braces = '[{'`).
+
+### argwrap_tail_comma
+
+Specifies if any closing brace should be preceded with a comma when wrapping lines.
+
+Tail comma disabled (default)::
+
+```
+Foo(
+    wibble,
+    wobble,
+    wubble
+)
+```
+
+Tail comma enabled (`let g:argwrap_tail_comma = 1`):
+
+```
+Foo(
+    wibble,
+    wobble,
+    wubble,
+)
+```
+
+### argwrap_tail_comma_braces
+
+Specifies which closing brace should be preceded with a comma when wrapping lines.
+
+Tail comma disabled (default):
+
+```
+Foo(
+    wibble,
+    wobble,
+    wubble
+)
+```
+
+Tail comma enabled for square brackets only (`let g:argwrap_tail_comma_braces = '['`):
+
+```
+[
+    1,
+    2,
+    3,
+]
+```
+
+### argwrap_tail_indent_braces
+
+Specifies if the closing brace should be indented to argument depth.
+
+Tail indent disabled:
+
+```
+Foo(
+    wibble,
+    wobble,
+    wubble
+)
+```
+
+Tail indent enabled for parenthesis (`let g:argwrap_tail_indent_braces = '('`):
+
+```
+Foo(
+    wibble,
+    wobble,
+    wubble
     )
-    ```
+```
 
-    *Line prefix enabled for Vimscript (`let g:argwrap_line_prefix = '\'`)*
+### argwrap_wrap_closing_brace
 
-    ```
-    Foo(
-        \wibble,
-        \wobble,
-        \wubble
-    \)
-    ```
+Specifies if the closing brace should be wrapped to a new line.
 
-*   `argwrap_padded_braces`
+Brace wrapping enabled (default):
 
-    Specifies which brace types should be padded on the inside with spaces.
+```
+Foo(
+    wibble,
+    wobble,
+    wubble
+)
+```
 
-    *Brace padding disabled (default)*
+Brace wrapping disabled (`let g:argwrap_wrap_closing_brace = 0`):
 
-    ```
-    [1, 2, 3]
-    {1, 2, 3}
-    ```
+```
+Foo(
+    wibble,
+    wobble,
+    wubble)
+```
 
-    *Brace padding enabled for square brackets only (`let g:argwrap_padded_braces = '['`)*
+### argwrap_comma_first
 
-    ```
-    [ 1, 2, 3 ]
-    {1, 2, 3}
-    ```
+Specifies if the argument comma delimiter should be placed before arguments.
 
-    *Padding can be specified for multiple brace types (`let g:argwrap_padded_braces = '[{'`)*
+Comma first disabled (default):
 
-*   `argwrap_tail_comma`
+```
+Foo(
+    wibble,
+    wobble,
+    wubble
+)
+```
 
-    Specifies if any closing brace should be preceded with a comma when wrapping lines.
+Comma first enabled (`let g:argwrap_comma_first = 1`):
 
-    *Tail comma disabled (default)*
+```
+Foo(
+    wibble
+    , wobble
+    , wubble
+)
+```
 
-    ```
-    Foo(
-        wibble,
-        wobble,
-        wubble
-    )
-    ```
+### argwrap_comma_first_indent
 
-    *Tail comma enabled (`let g:argwrap_tail_comma = 1`)*
+Specifies if the first argument should be indented when used in conjunction with `argwrap_comma_first`.
 
-    ```
-    Foo(
-        wibble,
-        wobble,
-        wubble,
-    )
-    ```
+Comma first indent disabled (default):
 
-*   `argwrap_tail_comma_braces`
+```
+Foo(
+    wibble
+    , wobble
+    , wubble
+)
+```
 
-    Specifies which closing brace should be preceded with a comma when wrapping lines.
+Comma first indent enabled (`let g:argwrap_comma_first_indent = 1`):
 
-    *Tail comma disabled (default)*
-
-    ```
-    Foo(
-        wibble,
-        wobble,
-        wubble
-    )
-    ```
-
-    *Tail comma enabled for square brackets only (`let g:argwrap_tail_comma_braces = '['`)*
-
-    ```
-    [
-        1,
-        2,
-        3,
-    ]
-    ```
-
-*   `argwrap_tail_indent_braces`
-
-    Specifies if the closing brace should be indented to argument depth.
-
-    *Tail indent disabled*
-
-    ```
-    Foo(
-        wibble,
-        wobble,
-        wubble
-    )
-    ```
-
-    *Tail indent enabled for parenthesis (`let g:argwrap_tail_indent_braces = '('`)*
-
-    ```
-    Foo(
-        wibble,
-        wobble,
-        wubble
-        )
-    ```
-
-*   `argwrap_wrap_closing_brace`
-
-    Specifies if the closing brace should be wrapped to a new line.
-
-    *Brace wrapping enabled (default)*
-
-    ```
-    Foo(
-        wibble,
-        wobble,
-        wubble
-    )
-    ```
-
-    *Brace wrapping disabled (`let g:argwrap_wrap_closing_brace = 0`)*
-
-    ```
-    Foo(
-        wibble,
-        wobble,
-        wubble)
-    ```
-
-*   `argwrap_comma_first`
-
-    Specifies if the argument comma delimiter should be placed before arguments.
-
-    *Comma first disabled (default)*
-
-    ```
-    Foo(
-        wibble,
-        wobble,
-        wubble
-    )
-    ```
-
-    *Comma first enabled (`let g:argwrap_comma_first = 1`)*
-
-    ```
-    Foo(
-        wibble
-        , wobble
-        , wubble
-    )
-    ```
-
-*   `argwrap_comma_first_indent`
-
-    Specifies if the first argument should be indented when used in conjunction with `argwrap_comma_first`.
-
-    *Comma first indent disabled (default)*
-
-    ```
-    Foo(
-        wibble
-        , wobble
-        , wubble
-    )
-    ```
-
-    *Comma first indent enabled (`let g:argwrap_comma_first_indent = 1`)*
-
-    ```
-    Foo(
-          wibble
-        , wobble
-        , wubble
-    )
-    ```
-
-## Usage
-
-1.  Position the cursor *inside* of the scope of the parenthesis, brackets or curly braces you wish to wrap/unwrap (not
-    on top, before or after them).
-2.  Execute the keyboard binding you defined above to *toggle* the wrapping and unwrapping of arguments.
+```
+Foo(
+      wibble
+    , wobble
+    , wubble
+)
+```
