@@ -1,12 +1,3 @@
-<!-- +++
-Area = "projects"
-GitHub = "vim-argwrap"
-Layout = "page"
-Tags = ["argwrap", "vim", "mit license", "vimscript"]
-Description = "Wrap and unwrap function arguments, lists, and dictionaries in Vim."
-Collection = "ProjectsActive"
-+++ -->
-
 # Vim-ArgWrap
 
 Vim-ArgWrap is an industrial strength argument wrapping and unwrapping extension for the Vim text editor. It can be used
