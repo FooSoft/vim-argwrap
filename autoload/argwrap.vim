@@ -45,7 +45,7 @@ endfunction
 
 function! argwrap#findRange(braces)
     let l:filter = 'synIDattr(synID(line("."), col("."), 0), "name") =~? "string"'
-    let [l:lineStart, l:colStart] = searchpairpos(a:braces[0], '', a:braces[1], 'Wnb', filter)
+    let [l:lineStart, l:colStart] = searchpairpos(a:braces[0], '', a:braces[1], 'Wcnb', filter)
     let [l:lineEnd, l:colEnd] = searchpairpos(a:braces[0], '', a:braces[1], 'Wcn', filter)
     return {'lineStart': l:lineStart, 'colStart': l:colStart, 'lineEnd': l:lineEnd, 'colEnd': l:colEnd}
 endfunction
