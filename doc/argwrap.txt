@@ -197,6 +197,23 @@ file basis using `ftplugin` or `autocmd`. For example, the `argwrap_tail_comma` 
             int $y
         ) {
 <
+*   argwrap_php_remove_tail_comma_function_declaration
+    Removes the tailing comma for PHP function declaration (it's invalid until
+    PHP 8).
+    PHP remove tail comma on function declaration disabled (default)
+>
+        public function foo(
+            int $x,
+            int $y,
+        ) {
+<
+    PHP remove tail comma on function declaration enabled
+>
+        public function foo(
+            int $x,
+            int $y
+        ) {
+<
 
 ------------------------------------------------------------------------------------------------------------------------
 HOOKS                                                                                                      *argwrap-hooks*

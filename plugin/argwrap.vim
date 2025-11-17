@@ -27,6 +27,7 @@ call argwrap#initSetting('comma_first', 0)
 call argwrap#initSetting('comma_first_indent', 0)
 call argwrap#initSetting('filetype_hooks', {})
 call argwrap#initSetting('php_smart_brace', 0)
+call argwrap#initSetting('php_remove_tail_comma_function_declaration', 0)
 
 command! ArgWrap call argwrap#toggle()
 
